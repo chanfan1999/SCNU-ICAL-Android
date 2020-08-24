@@ -10,7 +10,7 @@ import kotlinx.android.synthetic.main.welcome_fragment.*
 
 class WelcomeFragment : Fragment() {
 
-    var guideList: ArrayList<GuildText> = ArrayList()
+    var guideList: ArrayList<GuideText> = ArrayList()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -22,8 +22,8 @@ class WelcomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        guideList.add(GuildText("隐私说明：", getString(R.string.briefText), null))
-        guideList.add(GuildText("教程时间：", getString(R.string.guide), R.drawable.guide))
+        guideList.add(GuideText("隐私说明：", getString(R.string.briefText), null))
+        guideList.add(GuideText("教程时间：", getString(R.string.guide), R.drawable.guide))
         val layoutManager = LinearLayoutManager(context)
         recyclerView.layoutManager = layoutManager
         val adapter = GuideAdapter(guideList)

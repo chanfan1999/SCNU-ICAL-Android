@@ -8,9 +8,9 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
 
-class GuideAdapter(val guideList: List<GuildText>) :
+class GuideAdapter(val guideList: List<GuideText>) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    inner class MyHolder(view: View) : RecyclerView.ViewHolder(view) {
+    class MyHolder(view: View) : RecyclerView.ViewHolder(view) {
         val title: TextView = view.findViewById(R.id.title)
         val content: TextView = view.findViewById(R.id.content)
         val image: ImageView = view.findViewById(R.id.guideImage)
