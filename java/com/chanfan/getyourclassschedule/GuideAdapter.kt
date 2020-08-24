@@ -24,7 +24,7 @@ class GuideAdapter(val guideList: List<GuildText>) :
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val msg = guideList[position]
-        val myHolder = holder as MyHolder
+        holder as MyHolder
         holder.title.text = msg.title
         holder.content.text = msg.content
         if (msg.imageResID != null) {
