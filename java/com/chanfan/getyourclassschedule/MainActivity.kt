@@ -12,6 +12,7 @@ class MainActivity : AppCompatActivity() {
     private val welcomeFragment = WelcomeFragment()
     private val textModeFragment = TextModeFragment()
     private val netModeFragment = NetModeFragment()
+    private val aboutFragment = AboutFragment()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -36,6 +37,9 @@ class MainActivity : AppCompatActivity() {
                 R.id.getViaText -> {
                     title = "本地获取"
                     replaceFragment(textModeFragment)
+                }
+                R.id.about -> {
+                    replaceFragment(aboutFragment)
                 }
             }
             drawerLayout.closeDrawers()

@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text=""
+        android:text="项目开源地址："
         android:textSize="28sp" />
 
     <TextView
-        android:id="@+id/content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
-        android:textSize="18sp" />
+        android:autoLink="web"
+        android:text="https://github.com/chanfan1999/SCNU_ICAL_Android"
+        android:textSize="16sp" />
 
-    <ImageView
-        android:id="@+id/guideImage"
-        android:layout_width="wrap_content"
+    <TextView
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:adjustViewBounds="true" />
+        android:text="如果好用就是小陈写的，如果不行就怪hzs"
+        android:textSize="12sp" />
 
 </LinearLayout>

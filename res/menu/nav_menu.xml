@@ -11,5 +11,8 @@
         <item
             android:id="@+id/getViaText"
             android:title="本地生成" />
+        <item
+            android:id="@+id/about"
+            android:title="关于本项目" />
     </group>
 </menu>
