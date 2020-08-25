@@ -11,14 +11,21 @@
         android:text="本地模式"
         android:textSize="26sp" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="注意文件名以“xskbcx_cxXsKb”开头"
+        android:textColor="@color/colorPrimary"
+        android:textSize="24sp" />
+
 
     <EditText
         android:id="@+id/textData"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:focusedByDefault="true"
-        android:maxLines="5"
-        android:hint="粘贴获取到的信息后，点击下面的按钮开始处理~" />
+        android:hint="粘贴获取到的信息后，点击下面的按钮开始处理~"
+        android:maxLines="5" />
 
     <RadioGroup
         android:id="@+id/RadioGroup1"
@@ -29,8 +36,8 @@
         <RadioButton
             android:id="@+id/SHIPAI"
             android:layout_width="wrap_content"
-            android:checked="true"
             android:layout_height="100px"
+            android:checked="true"
             android:text="石牌校区" />
 
         <RadioButton

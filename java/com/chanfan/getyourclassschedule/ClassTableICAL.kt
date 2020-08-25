@@ -175,6 +175,7 @@ class ClassTableICAL {
 //                    put(CalendarContract.Reminders.METHOD, CalendarContract.Reminders.METHOD_DEFAULT)
 //                }
 //                context.contentResolver.insert(CalendarContract.Reminders.CONTENT_URI, alarmValues)
+                Thread.sleep(1000)
                 i += 1
             }
 
