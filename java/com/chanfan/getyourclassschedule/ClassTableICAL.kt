@@ -168,6 +168,7 @@ class ClassTableICAL {
                 }
                 val uri =
                     context.contentResolver.insert(CalendarContract.Events.CONTENT_URI, values)
+                //模拟器没有同步账号日历，下面代码会报错。正式版本再启用
 //                val eventID: Long = uri?.lastPathSegment!!.toLong()
 //                val alarmValues = ContentValues().apply {
 //                    put(CalendarContract.Reminders.MINUTES, 20)
@@ -175,7 +176,6 @@ class ClassTableICAL {
 //                    put(CalendarContract.Reminders.METHOD, CalendarContract.Reminders.METHOD_DEFAULT)
 //                }
 //                context.contentResolver.insert(CalendarContract.Reminders.CONTENT_URI, alarmValues)
-                Thread.sleep(1000)
                 i += 1
             }
 
