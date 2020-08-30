@@ -2,7 +2,6 @@ package com.chanfan.getyourclassschedule
 
 import android.graphics.BitmapFactory
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,7 +26,7 @@ class NetModeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         getCodePic.setOnClickListener {
             val loginService = ServiceCreator.create(LoginService::class.java)
-            loginService.getImg("https://sso.scnu.edu.cn/AccountService/user/rancode.jpg")
+            loginService.get("https://sso.scnu.edu.cn/AccountService/user/rancode.jpg")
                 .enqueue(object : Callback<ResponseBody> {
                     override fun onResponse(
                         call: Call<ResponseBody>,
@@ -40,7 +39,7 @@ class NetModeFragment : Fragment() {
                     }
 
                     override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                        Log.d("this", "失败了")
+                        Toast.makeText(context, "网络好像出了问题呢~", Toast.LENGTH_SHORT).show()
                     }
                 })
 
@@ -52,7 +51,7 @@ class NetModeFragment : Fragment() {
                     "account" to ac, "password" to pw, "rancode" to rc,
                     "client_id" to "", "response_type" to "", "redirect_url" to "", "jump" to ""
                 )
-                loginService.doLogin(
+                loginService.post(
                     loginForm,
                     "https://sso.scnu.edu.cn/AccountService/user/login.html"
                 ).enqueue(object : Callback<ResponseBody> {
@@ -64,11 +63,50 @@ class NetModeFragment : Fragment() {
                     }
 
                     override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                        Log.d("this", "失败了")
+                        Toast.makeText(context, "网络好像出了问题呢~", Toast.LENGTH_SHORT).show()
                     }
                 })
+
+                loginService.get("https://sso.scnu.edu.cn/AccountService/openapi/onekeyapp.html?id=96")
+                    .enqueue(object : Callback<ResponseBody> {
+                        override fun onResponse(
+                            call: Call<ResponseBody>,
+                            response: Response<ResponseBody>
+                        ) {
+                            Toast.makeText(context, "正在获取", Toast.LENGTH_SHORT).show()
+                        }
+
+                        override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                            Toast.makeText(context, "网络好像出了问题呢~", Toast.LENGTH_SHORT).show()
+                        }
+                    })
+                val formData = mapOf("xnm" to "2020", "xqm" to "3")
+                loginService.post(
+                    formData,
+                    "https://jwxt.scnu.edu.cn/kbcx/xskbcx_cxXsKb.html?gnmkdm=N253508"
+                )
+                    .enqueue(object : Callback<ResponseBody> {
+                        override fun onResponse(
+                            call: Call<ResponseBody>,
+                            response: Response<ResponseBody>
+                        ) {
+                            val data = response.body()?.string()
+                            if (data != null) {
+                                if (SHIPAI.isChecked)
+                                    ClassTableICAL.handleTextData(data, ClassTableICAL.SHIPAI)
+                                else
+                                    ClassTableICAL.handleTextData(data, ClassTableICAL.NANHAI)
+                            }
+
+                        }
+
+                        override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                            Toast.makeText(context, "网络好像出了问题呢~", Toast.LENGTH_SHORT).show()
+                        }
+                    })
+
             }
-            //TODO 进行跳转获取
+
             //TODO 使用协程完善流程
             //TODO 子线程中创建任务，主线程UI显示等待
 

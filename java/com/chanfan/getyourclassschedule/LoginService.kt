@@ -6,10 +6,10 @@ import retrofit2.http.*
 
 interface LoginService {
     @GET
-    fun getImg(@Url url: String): Call<ResponseBody>
+    fun get(@Url url: String): Call<ResponseBody>
 
     @FormUrlEncoded
     @POST
-    fun doLogin(@FieldMap params: Map<String, String>, @Url url: String): Call<ResponseBody>
+    fun post(@FieldMap params: Map<String, String>, @Url url: String): Call<ResponseBody>
 
 }

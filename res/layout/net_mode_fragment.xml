@@ -79,6 +79,27 @@
 
     </LinearLayout>
 
+    <RadioGroup
+        android:id="@+id/RadioGroup1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="8dp"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/SHIPAI"
+            android:layout_width="wrap_content"
+            android:layout_height="100px"
+            android:checked="true"
+            android:text="石牌校区" />
+
+        <RadioButton
+            android:id="@+id/Else"
+            android:layout_width="wrap_content"
+            android:layout_height="100px"
+            android:text="大学城/南海校区" />
+    </RadioGroup>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="70dp"
