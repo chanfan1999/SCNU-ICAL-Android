@@ -3,6 +3,7 @@
     package="com.chanfan.getyourclassschedule">
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_CALENDAR" />
+    <uses-permission android:name="android.permission.READ_CALENDAR" />
     <application
         android:name=".GlobalApp"
         android:icon="@mipmap/ic_launcher"

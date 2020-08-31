@@ -1,7 +1,6 @@
 package com.chanfan.getyourclassschedule
 
 import SugarICAL
-import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.content.Context
 import android.provider.CalendarContract
@@ -14,6 +13,7 @@ import java.io.OutputStreamWriter
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.regex.Pattern
+
 
 class ClassTableICAL {
 
@@ -118,8 +118,17 @@ class ClassTableICAL {
             }
         }
 
-        @SuppressLint("SetTextI18n")
         private fun writeToCalender() {
+            val projection = arrayOf("_id", "calendar_displayName")
+            var idCol = 0
+            context.contentResolver
+                .query(CalendarContract.Calendars.CONTENT_URI, projection, null, null, null)
+                ?.apply {
+                    if (moveToFirst()) {
+                        idCol = getColumnIndex(projection[0])
+                    }
+                    close()
+                }
             calender.events.forEach {
                 val startMillis =
                     SimpleDateFormat(pattern, Locale.CHINA).parse(it.DTStart)?.time?.toLong()
@@ -130,20 +139,23 @@ class ClassTableICAL {
                     put(CalendarContract.Events.DTEND, endMillis)
                     put(CalendarContract.Events.TITLE, it.summary)
                     put(CalendarContract.Events.DESCRIPTION, it.description)
-                    put(CalendarContract.Events.CALENDAR_ID, 0)
+                    put(CalendarContract.Events.CALENDAR_ID, idCol)
                     put(CalendarContract.Events.HAS_ALARM, 1)
                     put(CalendarContract.Events.EVENT_TIMEZONE, "Asia/Shanghai")
                 }
                 val uri =
                     context.contentResolver.insert(CalendarContract.Events.CONTENT_URI, values)
                 //模拟器没有同步账号日历，下面代码会报错。正式版本再启用
-//                val eventID: Long = uri?.lastPathSegment!!.toLong()
-//                val alarmValues = ContentValues().apply {
-//                    put(CalendarContract.Reminders.MINUTES, 20)
-//                    put(CalendarContract.Reminders.EVENT_ID, eventID)
-//                    put(CalendarContract.Reminders.METHOD, CalendarContract.Reminders.METHOD_DEFAULT)
-//                }
-//                context.contentResolver.insert(CalendarContract.Reminders.CONTENT_URI, alarmValues)
+                val eventID: Long = uri?.lastPathSegment!!.toLong()
+                val alarmValues = ContentValues().apply {
+                    put(CalendarContract.Reminders.MINUTES, 20)
+                    put(CalendarContract.Reminders.EVENT_ID, eventID)
+                    put(
+                        CalendarContract.Reminders.METHOD,
+                        CalendarContract.Reminders.METHOD_DEFAULT
+                    )
+                }
+                context.contentResolver.insert(CalendarContract.Reminders.CONTENT_URI, alarmValues)
             }
 
         }

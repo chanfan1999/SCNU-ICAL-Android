@@ -31,7 +31,12 @@ class TextModeFragment : Fragment() {
                     )
                     != PackageManager.PERMISSION_GRANTED
                 ) {
-                    requestPermissions(arrayOf(Manifest.permission.WRITE_CALENDAR), 1)
+                    requestPermissions(
+                        arrayOf(
+                            Manifest.permission.WRITE_CALENDAR,
+                            Manifest.permission.READ_CALENDAR
+                        ), 1
+                    )
                 } else {
                     writeCalendar()
                 }
@@ -53,10 +58,17 @@ class TextModeFragment : Fragment() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         when (requestCode) {
             1 -> {
-                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+                var allGrant = false
+                for (i in 0 until 2) {
+                    if (grantResults.isNotEmpty() && grantResults[i] == PackageManager.PERMISSION_GRANTED)
+                        allGrant = true
+                    else {
+                        allGrant = false
+                        Toast.makeText(context, "权限被拒绝了呢~", Toast.LENGTH_SHORT).show()
+                    }
+                }
+                if (allGrant) {
                     writeCalendar()
-                else {
-                    Toast.makeText(context, "权限被拒绝了呢~", Toast.LENGTH_SHORT).show()
                 }
             }
         }
