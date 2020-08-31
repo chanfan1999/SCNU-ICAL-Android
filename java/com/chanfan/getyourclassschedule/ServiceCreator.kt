@@ -18,9 +18,8 @@ object ServiceCreator {
     private val client = OkHttpClient.Builder().run {
         cookieJar(JavaNetCookieJar(cookieHandler))
         connectTimeout(10, TimeUnit.SECONDS)
-        readTimeout(500, TimeUnit.MILLISECONDS)
-        writeTimeout(1000, TimeUnit.MILLISECONDS)
-        retryOnConnectionFailure(true)
+        readTimeout(20, TimeUnit.SECONDS)
+        writeTimeout(20, TimeUnit.SECONDS)
         build()
     }
 

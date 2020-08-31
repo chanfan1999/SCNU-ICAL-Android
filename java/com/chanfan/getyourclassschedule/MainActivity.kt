@@ -1,5 +1,8 @@
 package com.chanfan.getyourclassschedule
 
+import android.app.AlertDialog
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
@@ -13,6 +16,8 @@ class MainActivity : AppCompatActivity() {
     private val textModeFragment = TextModeFragment()
     private val netModeFragment = NetModeFragment()
     private val aboutFragment = AboutFragment()
+    lateinit var shareDialog: AlertDialog
+    lateinit var loadingDialog: AlertDialog
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -22,6 +27,32 @@ class MainActivity : AppCompatActivity() {
         supportActionBar?.let {
             it.setDisplayHomeAsUpEnabled(true)
             it.setHomeAsUpIndicator(R.drawable.ic_menu)
+        }
+        loadingDialog = AlertDialog.Builder(this).setView(R.layout.my_loading).create().apply {
+            setCanceledOnTouchOutside(false)
+            setCancelable(false)
+        }
+        val shareIntent = Intent(Intent.ACTION_SEND)
+        shareDialog = AlertDialog.Builder(this).run {
+            setTitle("要导出ics日历文件吗？")
+            setMessage("可以通过微信等应用发送到自己电脑上")
+            setCancelable(true)
+            setPositiveButton("好") { _, _ ->
+                run {
+                    shareIntent.type = "application/pdf"
+                    val fileWithinMyDir = context.filesDir
+                    shareIntent.putExtra(
+                        Intent.EXTRA_STREAM,
+                        Uri.parse("content://${fileWithinMyDir}/new.ics")
+                    )
+                    shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Sharing File...")
+                    shareIntent.putExtra(Intent.EXTRA_TEXT, "Sharing File...")
+                    context.startActivity(Intent.createChooser(shareIntent, "Share File"))
+                }
+            }
+            setNegativeButton("不必了") { _, _ ->
+            }
+            create()
         }
         navView.setCheckedItem(R.id.welcome)
         navView.setNavigationItemSelectedListener {

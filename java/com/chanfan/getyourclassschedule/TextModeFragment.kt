@@ -36,7 +36,10 @@ class TextModeFragment : Fragment() {
                     writeCalendar()
                 }
             } else {
-                ClassTableICAL.shareDialog.show()
+                if (activity != null) {
+                    val mainActivity = activity as MainActivity
+                    mainActivity.shareDialog.show()
+                }
             }
         }
         return view

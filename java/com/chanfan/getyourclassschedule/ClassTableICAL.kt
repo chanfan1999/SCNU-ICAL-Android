@@ -2,18 +2,13 @@ package com.chanfan.getyourclassschedule
 
 import SugarICAL
 import android.annotation.SuppressLint
-import android.app.AlertDialog
 import android.content.ContentValues
 import android.content.Context
-import android.content.Intent
-import android.net.Uri
 import android.provider.CalendarContract
-import android.widget.Toast
 import com.alibaba.fastjson.JSON
 import com.alibaba.fastjson.JSONArray
 import com.alibaba.fastjson.JSONObject
 import com.chanfan.getyourclassschedule.GlobalApp.Companion.context
-import kotlinx.android.synthetic.main.my_loading.*
 import java.io.BufferedWriter
 import java.io.OutputStreamWriter
 import java.text.SimpleDateFormat
@@ -25,32 +20,9 @@ class ClassTableICAL {
     companion object {
         val SHIPAI: Int = 1
         val NANHAI: Int = 2
-        private val dialog = AlertDialog.Builder(context).setView(R.layout.my_loading).create()
         private val calender = SugarICAL.Calender()
-
         private const val pattern = "yyyyMMdd'T'HHmmSS"
-        private val shareIntent = Intent(Intent.ACTION_SEND)
-        val shareDialog = AlertDialog.Builder(context).apply {
-            setTitle("要导出ics日历文件吗？")
-            setMessage("可以通过微信等应用发送到自己电脑上")
-            setCancelable(true)
-            setPositiveButton("好") { _, _ ->
-                run {
-                    shareIntent.type = "application/pdf"
-                    val fileWithinMyDir = context.filesDir
-                    shareIntent.putExtra(
-                        Intent.EXTRA_STREAM,
-                        Uri.parse("content://${fileWithinMyDir}/new.ics")
-                    )
-                    shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Sharing File...")
-                    shareIntent.putExtra(Intent.EXTRA_TEXT, "Sharing File...")
-                    context.startActivity(Intent.createChooser(shareIntent, "Share File"))
-                }
-            }
-            setNegativeButton("不必了") { _, _ ->
-            }
-            create()
-        }
+
 
         private fun calculateDate(beginWeek: Int, weekday: Int): String {
             val baseDate =
@@ -148,11 +120,7 @@ class ClassTableICAL {
 
         @SuppressLint("SetTextI18n")
         private fun writeToCalender() {
-            val sum = calender.getEventNum() + 1
-            var i = 1
-
             calender.events.forEach {
-                dialog.textView.text = "正在处理：$i / $sum"
                 val startMillis =
                     SimpleDateFormat(pattern, Locale.CHINA).parse(it.DTStart)?.time?.toLong()
                 val endMillis =
@@ -176,7 +144,6 @@ class ClassTableICAL {
 //                    put(CalendarContract.Reminders.METHOD, CalendarContract.Reminders.METHOD_DEFAULT)
 //                }
 //                context.contentResolver.insert(CalendarContract.Reminders.CONTENT_URI, alarmValues)
-                i += 1
             }
 
         }
@@ -215,14 +182,8 @@ class ClassTableICAL {
             js.forEach {
                 process(it, zone)
             }
-            dialog.show()
-            dialog.setCanceledOnTouchOutside(false)
-            dialog.setCancelable(false)
             writeToCalender()
-            dialog.dismiss()
-            Toast.makeText(context, "写入完成", Toast.LENGTH_SHORT).show()
             makeFile()
-            shareDialog.show()
         }
     }
 }
