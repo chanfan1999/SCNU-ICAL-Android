@@ -1,5 +1,7 @@
 package com.chanfan.getyourclassschedule
 
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -29,7 +31,14 @@ class GuideAdapter(val guideList: List<GuideText>) :
         holder.content.text = msg.content
         if (msg.imageResID != null) {
             holder.image.apply {
-                setImageResource(msg.imageResID)
+                val options = BitmapFactory.Options()
+                options.inJustDecodeBounds = true
+                BitmapFactory.decodeResource(resources, msg.imageResID, options)
+                options.inSampleSize = 2
+                options.inPreferredConfig = Bitmap.Config.RGB_565
+                options.inJustDecodeBounds = false
+                val bitmap = BitmapFactory.decodeResource(resources, msg.imageResID, options)
+                setImageBitmap(bitmap)
                 setOnClickListener {
                     ImageActivity.actionStart(context, msg.imageResID)
                 }
@@ -38,4 +47,20 @@ class GuideAdapter(val guideList: List<GuideText>) :
     }
 
     override fun getItemCount(): Int = guideList.size
+
+    private fun calculateInSampleSize(
+        options: BitmapFactory.Options,
+        reqWidth: Int,
+        reqHeight: Int
+    ): Int {
+        val width = options.outWidth
+        val height = options.outHeight
+        var inSampleSize = 1
+        val halfWidth = width / 2
+        val halfHeight = height / 2
+        while (halfWidth / inSampleSize >= reqWidth && halfHeight / inSampleSize >= reqHeight) {
+            inSampleSize *= 2
+        }
+        return inSampleSize
+    }
 }

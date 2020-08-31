@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">GetYourClassSchedule</string>
+    <string name="app_name">课表获取</string>
     <string name="ie">
         这是一个能把课表导入到手机日历的应用
     </string>
