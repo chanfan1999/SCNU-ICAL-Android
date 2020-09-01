@@ -69,6 +69,8 @@ class TextModeFragment : Fragment() {
                 }
                 if (allGrant) {
                     writeCalendar()
+                } else {
+                    Toast.makeText(context, "权限没给够哦", Toast.LENGTH_SHORT).show()
                 }
             }
         }
