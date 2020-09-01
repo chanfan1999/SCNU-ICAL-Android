@@ -82,6 +82,33 @@ class NetModeFragment : Fragment() {
 
     }
 
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when (requestCode) {
+            1 -> {
+                var allGrant = false
+                for (i in 0 until 2) {
+                    if (grantResults.isNotEmpty() && grantResults[i] == PackageManager.PERMISSION_GRANTED)
+                        allGrant = true
+                    else {
+                        allGrant = false
+                        Toast.makeText(context, "权限被拒绝了呢~", Toast.LENGTH_SHORT).show()
+                    }
+                }
+                if (allGrant) {
+                    writeCalendar()
+                } else {
+                    Toast.makeText(context, "权限没给够哦", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
+
+
     private fun writeCalendar() {
         thread {
             val ac = account.text.toString()
