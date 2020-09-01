@@ -119,7 +119,7 @@ class ClassTableICAL {
         }
 
         private fun writeToCalender() {
-            val projection = arrayOf("_id", "calendar_displayName")
+            val projection = arrayOf("_id")
             var idCol = 0
             context.contentResolver
                 .query(CalendarContract.Calendars.CONTENT_URI, projection, null, null, null)
@@ -152,7 +152,7 @@ class ClassTableICAL {
                     put(CalendarContract.Reminders.EVENT_ID, eventID)
                     put(
                         CalendarContract.Reminders.METHOD,
-                        CalendarContract.Reminders.METHOD_DEFAULT
+                        CalendarContract.Reminders.METHOD_ALARM
                     )
                 }
                 context.contentResolver.insert(CalendarContract.Reminders.CONTENT_URI, alarmValues)

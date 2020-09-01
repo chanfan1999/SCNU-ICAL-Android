@@ -18,7 +18,7 @@ import retrofit2.Response
 import kotlin.concurrent.thread
 
 class NetModeFragment : Fragment() {
-    lateinit var loginService: LoginService
+    private lateinit var loginService: LoginService
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -110,38 +110,40 @@ class NetModeFragment : Fragment() {
 
 
     private fun writeCalendar() {
-        thread {
-            val ac = account.text.toString()
-            val pw = password.text.toString()
-            val rc = verifyCode.text.toString()
-            val loginForm = mapOf(
-                "account" to ac,
-                "password" to pw,
-                "rancode" to rc,
-                "client_id" to "",
-                "response_type" to "",
-                "redirect_url" to "",
-                "jump" to ""
-            )
-            //异步会发生顺序错误导致无法登陆
-            loginService.post(
-                loginForm,
-                "https://sso.scnu.edu.cn/AccountService/user/login.html"
-            ).execute()
-            loginService.get("https://sso.scnu.edu.cn/AccountService/openapi/onekeyapp.html?id=96")
-                .execute()
-            val formData = mapOf("xnm" to "2020", "xqm" to "3")
-            val classData = loginService.post(
-                formData,
-                "https://jwxt.scnu.edu.cn/kbcx/xskbcx_cxXsKb.html?gnmkdm=N253508"
-            ).execute().body()?.string()
-            if (classData != null)
-                if (SHIPAI.isChecked)
-                    ClassTableICAL.handleTextData(classData, ClassTableICAL.SHIPAI)
-                else
-                    ClassTableICAL.handleTextData(classData, ClassTableICAL.NANHAI)
+        val ac = account.text.toString()
+        val pw = password.text.toString()
+        val rc = verifyCode.text.toString()
+        if (ac == "" || pw == "" || rc == "") {
+            Toast.makeText(context, "请输入账号信息", Toast.LENGTH_SHORT).show()
+        } else {
+            thread {
+                val loginForm = mapOf(
+                    "account" to ac,
+                    "password" to pw,
+                    "rancode" to rc,
+                    "client_id" to "",
+                    "response_type" to "",
+                    "redirect_url" to "",
+                    "jump" to ""
+                )
+                //异步会发生顺序错误导致无法登陆
+                loginService.post(
+                    loginForm,
+                    "https://sso.scnu.edu.cn/AccountService/user/login.html"
+                ).execute()
+                loginService.get("https://sso.scnu.edu.cn/AccountService/openapi/onekeyapp.html?id=96")
+                    .execute()
+                val formData = mapOf("xnm" to "2020", "xqm" to "3")
+                val classData = loginService.post(
+                    formData,
+                    "https://jwxt.scnu.edu.cn/kbcx/xskbcx_cxXsKb.html?gnmkdm=N253508"
+                ).execute().body()?.string()
+                if (classData != null)
+                    if (SHIPAI.isChecked)
+                        ClassTableICAL.handleTextData(classData, ClassTableICAL.SHIPAI)
+                    else
+                        ClassTableICAL.handleTextData(classData, ClassTableICAL.NANHAI)
+            }
         }
     }
-
-
 }

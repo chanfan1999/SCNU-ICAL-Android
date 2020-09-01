@@ -5,6 +5,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
@@ -51,6 +52,7 @@ class MainActivity : AppCompatActivity() {
                 }
             }
             setNegativeButton("不必了") { _, _ ->
+                Toast.makeText(context, "日历写入成功~", Toast.LENGTH_SHORT).show()
             }
             create()
         }

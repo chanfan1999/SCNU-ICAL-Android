@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.text_mode_fragment.*
 import kotlinx.android.synthetic.main.text_mode_fragment.view.*
 import java.io.File
+import kotlin.concurrent.thread
 
 
 class TextModeFragment : Fragment() {
@@ -79,10 +80,12 @@ class TextModeFragment : Fragment() {
     private fun writeCalendar() {
         val data = textData.text.toString()
         if (data != "")
-            if (SHIPAI.isChecked) {
-                ClassTableICAL.handleTextData(data, ClassTableICAL.SHIPAI)
-            } else {
-                ClassTableICAL.handleTextData(data, ClassTableICAL.NANHAI)
+            thread {
+                if (SHIPAI.isChecked) {
+                    ClassTableICAL.handleTextData(data, ClassTableICAL.SHIPAI)
+                } else {
+                    ClassTableICAL.handleTextData(data, ClassTableICAL.NANHAI)
+                }
             }
         else {
             Toast.makeText(context, "请输入文本信息", Toast.LENGTH_SHORT).show()
