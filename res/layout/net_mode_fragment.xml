@@ -67,7 +67,6 @@
             android:layout_weight="4"
             android:layout_height="match_parent"
             android:hint="@string/VerifyCode"
-            android:imeOptions="actionDone"
             android:selectAllOnFocus="true" />
 
         <ImageView

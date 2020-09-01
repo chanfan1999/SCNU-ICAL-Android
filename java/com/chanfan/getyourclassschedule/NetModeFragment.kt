@@ -1,15 +1,21 @@
 package com.chanfan.getyourclassschedule
 
 import android.Manifest
+import android.content.Context
 import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.os.Message
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.content.ContextCompat
+import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
+import com.chanfan.getyourclassschedule.TextModeFragment.Companion.ERROR
+import com.chanfan.getyourclassschedule.TextModeFragment.Companion.FINISHED
 import kotlinx.android.synthetic.main.net_mode_fragment.*
 import okhttp3.ResponseBody
 import retrofit2.Call
@@ -19,6 +25,8 @@ import kotlin.concurrent.thread
 
 class NetModeFragment : Fragment() {
     private lateinit var loginService: LoginService
+    lateinit var mainActivity: MainActivity
+    lateinit var handler: Handler
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -29,7 +37,22 @@ class NetModeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        mainActivity = activity as MainActivity
+        handler = object : Handler(Looper.myLooper()!!) {
+            override fun handleMessage(msg: Message) {
+                super.handleMessage(msg)
+                when (msg.what) {
+                    FINISHED -> {
+                        mainActivity.loadingDialog.dismiss()
+                        mainActivity.shareDialog.show()
+                    }
+                    ERROR -> {
+                        mainActivity.loadingDialog.dismiss()
+                        Toast.makeText(context, "出问题了~", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        }
         getCodePic.setOnClickListener {
             loginService = ServiceCreator.create(LoginService::class.java)
             loginService.get("https://sso.scnu.edu.cn/AccountService/user/rancode.jpg")
@@ -50,33 +73,20 @@ class NetModeFragment : Fragment() {
                 })
         }
         login.setOnClickListener {
-            if (ContextCompat.checkSelfPermission(
+            if (hasPermissions(
                     GlobalApp.context,
+                    Manifest.permission.READ_CALENDAR,
                     Manifest.permission.WRITE_CALENDAR
                 )
-                != PackageManager.PERMISSION_GRANTED
-                ||
-                ContextCompat.checkSelfPermission(
-                    GlobalApp.context,
-                    Manifest.permission.READ_CALENDAR
-                )
-                != PackageManager.PERMISSION_GRANTED
             ) {
+                writeCalendar()
+            } else {
                 requestPermissions(
                     arrayOf(
-                        Manifest.permission.WRITE_CALENDAR,
-                        Manifest.permission.READ_CALENDAR
+                        Manifest.permission.READ_CALENDAR,
+                        Manifest.permission.WRITE_CALENDAR
                     ), 1
                 )
-            } else {
-                if (activity != null) {
-                    val mainActivity = activity as MainActivity
-                    mainActivity.loadingDialog.show()
-                    writeCalendar()
-                    mainActivity.loadingDialog.dismiss()
-                    Toast.makeText(context, "写入完成", Toast.LENGTH_SHORT).show()
-                    mainActivity.shareDialog.show()
-                }
             }
         }
 
@@ -90,19 +100,10 @@ class NetModeFragment : Fragment() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         when (requestCode) {
             1 -> {
-                var allGrant = false
-                for (i in 0 until 2) {
-                    if (grantResults.isNotEmpty() && grantResults[i] == PackageManager.PERMISSION_GRANTED)
-                        allGrant = true
-                    else {
-                        allGrant = false
-                        Toast.makeText(context, "权限被拒绝了呢~", Toast.LENGTH_SHORT).show()
-                    }
-                }
-                if (allGrant) {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     writeCalendar()
                 } else {
-                    Toast.makeText(context, "权限没给够哦", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "权限被拒绝了", Toast.LENGTH_SHORT).show()
                 }
             }
         }
@@ -116,6 +117,8 @@ class NetModeFragment : Fragment() {
         if (ac == "" || pw == "" || rc == "") {
             Toast.makeText(context, "请输入账号信息", Toast.LENGTH_SHORT).show()
         } else {
+
+            mainActivity.loadingDialog.show()
             thread {
                 val loginForm = mapOf(
                     "account" to ac,
@@ -138,12 +141,26 @@ class NetModeFragment : Fragment() {
                     formData,
                     "https://jwxt.scnu.edu.cn/kbcx/xskbcx_cxXsKb.html?gnmkdm=N253508"
                 ).execute().body()?.string()
-                if (classData != null)
-                    if (SHIPAI.isChecked)
-                        ClassTableICAL.handleTextData(classData, ClassTableICAL.SHIPAI)
-                    else
-                        ClassTableICAL.handleTextData(classData, ClassTableICAL.NANHAI)
+                try {
+                    if (classData != null)
+                        if (SHIPAI.isChecked)
+                            ClassTableICAL.handleTextData(classData, ClassTableICAL.SHIPAI)
+                        else
+                            ClassTableICAL.handleTextData(classData, ClassTableICAL.NANHAI)
+                    handler.sendMessage(Message().apply {
+                        what = FINISHED
+                    })
+                } catch (e: Exception) {
+                    handler.sendMessage(Message().apply {
+                        what = ERROR
+                    })
+                }
             }
         }
     }
+
+    private fun hasPermissions(context: Context, vararg permissions: String): Boolean =
+        permissions.all {
+            ActivityCompat.checkSelfPermission(context, it) == PackageManager.PERMISSION_GRANTED
+        }
 }

@@ -119,28 +119,38 @@ class ClassTableICAL {
         }
 
         private fun writeToCalender() {
-            val projection = arrayOf("_id")
-            var idCol = 0
-            context.contentResolver
-                .query(CalendarContract.Calendars.CONTENT_URI, projection, null, null, null)
-                ?.apply {
-                    if (moveToFirst()) {
-                        idCol = getColumnIndex(projection[0])
-                    }
-                    close()
+            val projection = arrayOf(
+                CalendarContract.Calendars._ID,
+                CalendarContract.Calendars.CALENDAR_DISPLAY_NAME
+            )
+            var calID = ""
+            var calName: String
+            context.contentResolver.query(
+                CalendarContract.Calendars.CONTENT_URI,
+                projection, null, null, null
+            )?.apply {
+                val nameCol: Int = getColumnIndex(projection[1])
+                val idCol: Int = getColumnIndex(projection[0])
+                if (moveToFirst()) {
+                    calName = getString(nameCol)
+                    calID = getString(idCol)
                 }
+                close()
+            }
+
+
             calender.events.forEach {
                 val startMillis =
-                    SimpleDateFormat(pattern, Locale.CHINA).parse(it.DTStart)?.time?.toLong()
+                    SimpleDateFormat(pattern, Locale.CHINA).parse(it.DTStart)?.time
                 val endMillis =
-                    SimpleDateFormat(pattern, Locale.CHINA).parse(it.DTEnd)?.time?.toLong()
+                    SimpleDateFormat(pattern, Locale.CHINA).parse(it.DTEnd)?.time
                 val values = ContentValues().apply {
+                    put(CalendarContract.Events.CALENDAR_ID, calID)
                     put(CalendarContract.Events.DTSTART, startMillis)
                     put(CalendarContract.Events.DTEND, endMillis)
                     put(CalendarContract.Events.TITLE, it.summary)
+                    put(CalendarContract.Events.RRULE, "FREQ=${it.RRule};COUNT=${it.count}")
                     put(CalendarContract.Events.DESCRIPTION, it.description)
-                    put(CalendarContract.Events.CALENDAR_ID, idCol)
-                    put(CalendarContract.Events.HAS_ALARM, 1)
                     put(CalendarContract.Events.EVENT_TIMEZONE, "Asia/Shanghai")
                 }
                 val uri =
