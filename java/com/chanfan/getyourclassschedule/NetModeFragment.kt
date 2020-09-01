@@ -26,7 +26,7 @@ import kotlin.concurrent.thread
 class NetModeFragment : Fragment() {
     private lateinit var loginService: LoginService
     lateinit var mainActivity: MainActivity
-    lateinit var handler: Handler
+    private lateinit var handler: Handler
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -55,7 +55,7 @@ class NetModeFragment : Fragment() {
         }
         getCodePic.setOnClickListener {
             loginService = ServiceCreator.create(LoginService::class.java)
-            loginService.get("https://sso.scnu.edu.cn/AccountService/user/rancode.jpg")
+            loginService.get(getString(R.string.verifyCodeLink))
                 .enqueue(object : Callback<ResponseBody> {
                     override fun onResponse(
                         call: Call<ResponseBody>,
@@ -131,15 +131,14 @@ class NetModeFragment : Fragment() {
                 )
                 //异步会发生顺序错误导致无法登陆
                 loginService.post(
-                    loginForm,
-                    "https://sso.scnu.edu.cn/AccountService/user/login.html"
+                    loginForm, getString(R.string.loginLink)
                 ).execute()
-                loginService.get("https://sso.scnu.edu.cn/AccountService/openapi/onekeyapp.html?id=96")
+                loginService.get(getString(R.string.jwxtLink))
                     .execute()
-                val formData = mapOf("xnm" to "2020", "xqm" to "3")
+                val formData =
+                    mapOf("xnm" to getString(R.string.xnm), "xqm" to getString(R.string.xqm))
                 val classData = loginService.post(
-                    formData,
-                    "https://jwxt.scnu.edu.cn/kbcx/xskbcx_cxXsKb.html?gnmkdm=N253508"
+                    formData, getString(R.string.dataLink)
                 ).execute().body()?.string()
                 try {
                     if (classData != null)

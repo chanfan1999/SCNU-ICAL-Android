@@ -22,5 +22,23 @@
     <string name="cn_login_info">统一身份验证登录</string>
     <string name="account">账号</string>
     <string name="password">密码</string>
-    <string name="VerifyCode">验证码</string>
+    <string name="verifyCode">验证码</string>
+    <string name="verifyCodeLink">
+        https://sso.scnu.edu.cn/AccountService/user/rancode.jpg
+    </string>
+    <string name="loginLink">
+           https://sso.scnu.edu.cn/AccountService/user/login.html
+    </string>
+    <string name="jwxtLink">
+        https://sso.scnu.edu.cn/AccountService/openapi/onekeyapp.html?id=96
+    </string>
+    <string name="dataLink">
+        https://jwxt.scnu.edu.cn/kbcx/xskbcx_cxXsKb.html?gnmkdm=N253508
+    </string>
+    <string name="xnm">
+        2020
+    </string>
+    <string name="xqm">
+        3
+    </string>
 </resources>

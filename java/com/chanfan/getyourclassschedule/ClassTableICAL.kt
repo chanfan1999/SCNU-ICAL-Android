@@ -167,7 +167,6 @@ class ClassTableICAL {
                 }
                 context.contentResolver.insert(CalendarContract.Reminders.CONTENT_URI, alarmValues)
             }
-
         }
 
         //Android上实现文件读写
