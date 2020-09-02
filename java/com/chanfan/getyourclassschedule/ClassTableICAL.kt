@@ -149,6 +149,7 @@ class ClassTableICAL {
                     put(CalendarContract.Events.DTSTART, startMillis)
                     put(CalendarContract.Events.DTEND, endMillis)
                     put(CalendarContract.Events.TITLE, it.summary)
+                    put(CalendarContract.Events.EVENT_LOCATION, it.location)
                     put(CalendarContract.Events.RRULE, "FREQ=${it.RRule};COUNT=${it.count}")
                     put(CalendarContract.Events.DESCRIPTION, it.description)
                     put(CalendarContract.Events.EVENT_TIMEZONE, "Asia/Shanghai")
