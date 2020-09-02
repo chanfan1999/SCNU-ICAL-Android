@@ -174,28 +174,28 @@ class ClassTableICAL {
         private fun makeFile() {
             val output = context.openFileOutput("new.ics", Context.MODE_PRIVATE)
             val writer = BufferedWriter(OutputStreamWriter(output))
-            writer.use {
-                it.apply {
-                    write("BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:Lucky 2 meet U~\n")
-                    for (e in calender.events) {
-                        write("BEGIN:VEVENT\n")
-                        write("UID:${e.UID}\n")
-                        write("SUMMARY:${e.summary}\n")
-                        write("LOCATION:${e.location}\n")
-                        write("DESCRIPTION:${e.description}\n")
-                        write("DTSTART:${e.DTStart}\n")
-                        write("DTEND:${e.DTEnd}\n")
-                        write("RRULE:FREQ=${e.RRule};")
-                        write("COUNT=${e.count}\n")
-                        write(
-                            "BEGIN:VALARM\nACTION:DISPLAY\nTRIGGER;RELATED=START:-PT20M \nDESCRIPTION:${
-                                e.alertDescription
-                            }\nEND:VALARM\nEND:VEVENT\n"
-                        )
-                    }
-                    write("END:VCALENDAR")
+            writer.apply {
+                write("BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:Lucky 2 meet U~\n")
+                for (e in calender.events) {
+                    write("BEGIN:VEVENT\n")
+                    write("UID:${e.UID}\n")
+                    write("SUMMARY:${e.summary}\n")
+                    write("LOCATION:${e.location}\n")
+                    write("DESCRIPTION:${e.description}\n")
+                    write("DTSTART:${e.DTStart}\n")
+                    write("DTEND:${e.DTEnd}\n")
+                    write("RRULE:FREQ=${e.RRule};")
+                    write("COUNT=${e.count}\n")
+                    write(
+                        "BEGIN:VALARM\nACTION:DISPLAY\nTRIGGER;RELATED=START:-PT20M \nDESCRIPTION:${
+                            e.alertDescription
+                        }\nEND:VALARM\nEND:VEVENT\n"
+                    )
                 }
+                write("END:VCALENDAR")
             }
+            writer.close()
+            output.close()
 
         }
 

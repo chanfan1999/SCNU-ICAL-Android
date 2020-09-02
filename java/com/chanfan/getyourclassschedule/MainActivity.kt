@@ -2,14 +2,15 @@ package com.chanfan.getyourclassschedule
 
 import android.app.AlertDialog
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.FileProvider
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.activity_main.*
+import java.io.File
 
 class MainActivity : AppCompatActivity() {
 
@@ -40,15 +41,15 @@ class MainActivity : AppCompatActivity() {
             setCancelable(true)
             setPositiveButton("好") { _, _ ->
                 run {
-                    shareIntent.type = "application/pdf"
-                    val fileWithinMyDir = context.filesDir
+                    shareIntent.type = "*/*"
                     shareIntent.putExtra(
                         Intent.EXTRA_STREAM,
-                        Uri.parse("content://${fileWithinMyDir}/new.ics")
+                        FileProvider.getUriForFile(
+                            context, "com.chanfan.getyourclassschedule.fileprovider",
+                            File(context.filesDir, "new.ics")
+                        )
                     )
-                    shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Sharing File...")
-                    shareIntent.putExtra(Intent.EXTRA_TEXT, "Sharing File...")
-                    context.startActivity(Intent.createChooser(shareIntent, "Share File"))
+                    context.startActivity(shareIntent)
                 }
             }
             setNegativeButton("不必了") { _, _ ->
