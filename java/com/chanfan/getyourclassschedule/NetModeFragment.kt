@@ -15,12 +15,14 @@ import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import com.chanfan.getyourclassschedule.TextModeFragment.Companion.ERROR
+import com.chanfan.getyourclassschedule.TextModeFragment.Companion.EXISTED
 import com.chanfan.getyourclassschedule.TextModeFragment.Companion.FINISHED
 import kotlinx.android.synthetic.main.net_mode_fragment.*
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.io.File
 import kotlin.concurrent.thread
 
 class NetModeFragment : Fragment() {
@@ -49,6 +51,11 @@ class NetModeFragment : Fragment() {
                     ERROR -> {
                         mainActivity.loadingDialog.dismiss()
                         Toast.makeText(context, "出问题了~", Toast.LENGTH_SHORT).show()
+                    }
+                    EXISTED -> {
+                        mainActivity.loadingDialog.dismiss()
+                        Toast.makeText(context, "文件已经存在了", Toast.LENGTH_SHORT).show()
+                        mainActivity.shareDialog.show()
                     }
                 }
             }
@@ -111,51 +118,59 @@ class NetModeFragment : Fragment() {
 
 
     private fun writeCalendar() {
-        val ac = account.text.toString()
-        val pw = password.text.toString()
-        val rc = verifyCode.text.toString()
-        if (ac == "" || pw == "" || rc == "") {
-            Toast.makeText(context, "请输入账号信息", Toast.LENGTH_SHORT).show()
-        } else {
+        val f = File(context?.filesDir!!.path, "new.ics")
+        if (!f.exists()) {
+            val ac = account.text.toString()
+            val pw = password.text.toString()
+            val rc = verifyCode.text.toString()
+            if (ac == "" || pw == "" || rc == "") {
+                Toast.makeText(context, "请输入账号信息", Toast.LENGTH_SHORT).show()
+            } else {
 
-            mainActivity.loadingDialog.show()
-            thread {
-                val loginForm = mapOf(
-                    "account" to ac,
-                    "password" to pw,
-                    "rancode" to rc,
-                    "client_id" to "",
-                    "response_type" to "",
-                    "redirect_url" to "",
-                    "jump" to ""
-                )
-                //异步会发生顺序错误导致无法登陆
-                loginService.post(
-                    loginForm, getString(R.string.loginLink)
-                ).execute()
-                loginService.get(getString(R.string.jwxtLink))
-                    .execute()
-                val formData =
-                    mapOf("xnm" to getString(R.string.xnm), "xqm" to getString(R.string.xqm))
-                val classData = loginService.post(
-                    formData, getString(R.string.dataLink)
-                ).execute().body()?.string()
-                try {
-                    if (classData != null)
-                        if (SHIPAI.isChecked)
-                            ClassTableICAL.handleTextData(classData, ClassTableICAL.SHIPAI)
-                        else
-                            ClassTableICAL.handleTextData(classData, ClassTableICAL.NANHAI)
-                    handler.sendMessage(Message().apply {
-                        what = FINISHED
-                    })
-                } catch (e: Exception) {
-                    handler.sendMessage(Message().apply {
-                        what = ERROR
-                    })
+                mainActivity.loadingDialog.show()
+                thread {
+                    val loginForm = mapOf(
+                        "account" to ac,
+                        "password" to pw,
+                        "rancode" to rc,
+                        "client_id" to "",
+                        "response_type" to "",
+                        "redirect_url" to "",
+                        "jump" to ""
+                    )
+                    //异步会发生顺序错误导致无法登陆
+                    loginService.post(
+                        loginForm, getString(R.string.loginLink)
+                    ).execute()
+                    loginService.get(getString(R.string.jwxtLink))
+                        .execute()
+                    val formData =
+                        mapOf("xnm" to getString(R.string.xnm), "xqm" to getString(R.string.xqm))
+                    val classData = loginService.post(
+                        formData, getString(R.string.dataLink)
+                    ).execute().body()?.string()
+                    try {
+                        if (classData != null)
+                            if (SHIPAI.isChecked)
+                                ClassTableICAL.handleTextData(classData, ClassTableICAL.SHIPAI)
+                            else
+                                ClassTableICAL.handleTextData(classData, ClassTableICAL.NANHAI)
+                        handler.sendMessage(Message().apply {
+                            what = FINISHED
+                        })
+                    } catch (e: Exception) {
+                        handler.sendMessage(Message().apply {
+                            what = ERROR
+                        })
+                    }
                 }
             }
+        } else {
+            handler.sendMessage(Message().apply {
+                what = EXISTED
+            })
         }
+
     }
 
     private fun hasPermissions(context: Context, vararg permissions: String): Boolean =

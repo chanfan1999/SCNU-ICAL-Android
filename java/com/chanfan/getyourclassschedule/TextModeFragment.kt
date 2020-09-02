@@ -26,6 +26,7 @@ class TextModeFragment : Fragment() {
     companion object {
         val FINISHED = 1
         val ERROR = 0
+        val EXISTED = 2
     }
 
     override fun onCreateView(
@@ -47,6 +48,11 @@ class TextModeFragment : Fragment() {
                         mainActivity.loadingDialog.dismiss()
                         Toast.makeText(context, "出问题了~", Toast.LENGTH_SHORT).show()
                     }
+                    EXISTED -> {
+                        mainActivity.loadingDialog.dismiss()
+                        Toast.makeText(context, "~", Toast.LENGTH_SHORT).show()
+
+                    }
                 }
             }
         }
@@ -59,14 +65,7 @@ class TextModeFragment : Fragment() {
                     Manifest.permission.WRITE_CALENDAR
                 )
             ) {
-                val f = File(context?.filesDir!!.path, "new.ics")
-                if (!f.exists())
-                    writeCalendar()
-                else {
-                    Toast.makeText(context, "文件已存在", Toast.LENGTH_SHORT).show()
-                    val mainActivity = activity as MainActivity
-                    mainActivity.shareDialog.show()
-                }
+                writeCalendar()
             } else {
                 requestPermissions(
                     arrayOf(
@@ -97,27 +96,35 @@ class TextModeFragment : Fragment() {
     }
 
     private fun writeCalendar() {
-        val data = textData.text.toString()
-        if (data != "") {
-            thread {
-                try {
-                    if (SHIPAI.isChecked) {
-                        ClassTableICAL.handleTextData(data, ClassTableICAL.SHIPAI)
-                    } else {
-                        ClassTableICAL.handleTextData(data, ClassTableICAL.NANHAI)
+        val f = File(context?.filesDir!!.path, "new.ics")
+        if (!f.exists()) {
+            val data = textData.text.toString()
+            if (data != "") {
+                thread {
+                    try {
+                        if (SHIPAI.isChecked) {
+                            ClassTableICAL.handleTextData(data, ClassTableICAL.SHIPAI)
+                        } else {
+                            ClassTableICAL.handleTextData(data, ClassTableICAL.NANHAI)
+                        }
+                        handler.sendMessage(Message().apply {
+                            what = FINISHED
+                        })
+                    } catch (e: Exception) {
+                        handler.sendMessage(Message().apply {
+                            what = ERROR
+                        })
                     }
-                    handler.sendMessage(Message().apply {
-                        what = FINISHED
-                    })
-                } catch (e: Exception) {
-                    handler.sendMessage(Message().apply {
-                        what = ERROR
-                    })
                 }
+            } else {
+                Toast.makeText(context, "请输入文本信息", Toast.LENGTH_SHORT).show()
             }
         } else {
-            Toast.makeText(context, "请输入文本信息", Toast.LENGTH_SHORT).show()
+            handler.sendMessage(Message().apply {
+                what = EXISTED
+            })
         }
+
     }
 
     private fun hasPermissions(context: Context, vararg permissions: String): Boolean =
