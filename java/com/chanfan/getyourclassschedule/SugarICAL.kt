@@ -63,7 +63,7 @@ class SugarICAL {
             bw.close()
             out.close()
             fos.close()
-            print("Make Accomplished!New ICS File is in ${f.absolutePath}")
+            events.clear()
         }
     }
 }

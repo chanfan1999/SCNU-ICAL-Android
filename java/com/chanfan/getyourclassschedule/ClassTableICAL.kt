@@ -196,7 +196,7 @@ class ClassTableICAL {
             }
             writer.close()
             output.close()
-
+            calender.events.clear()
         }
 
         fun handleTextData(data: String, zone: Int) {
