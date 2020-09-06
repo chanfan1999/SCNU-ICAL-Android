@@ -37,7 +37,10 @@ class MainActivity : AppCompatActivity() {
         val shareIntent = Intent(Intent.ACTION_SEND)
         shareDialog = AlertDialog.Builder(this).run {
             setTitle("要导出ics日历文件吗？")
-            setMessage("可以通过微信等应用发送到自己电脑上")
+            setMessage(
+                "课表已经完成导入，现在退出就可以在系统日历中查看了。" +
+                        "可以通过微信或者QQ等应用发送到自己电脑上，让电脑也有一份课表。"
+            )
             setCancelable(true)
             setPositiveButton("好") { _, _ ->
                 run {
