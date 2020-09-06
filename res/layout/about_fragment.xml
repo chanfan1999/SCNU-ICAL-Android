@@ -8,7 +8,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="项目开源地址："
+        android:text="@string/openSource"
         android:textSize="28sp" />
 
     <TextView
@@ -16,25 +16,26 @@
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
         android:autoLink="web"
-        android:text="https://github.com/chanfan1999/SCNU_ICAL_Android"
+        android:text="@string/openSourceLink"
         android:textSize="16sp" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Credit："
+        android:text="@string/credit"
         android:textSize="28sp" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="由@lnm011223提供新图标支持"
-        android:textSize="16sp" />
+        android:text="@string/creditList"
+        android:textSize="18sp" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="如果好用就是小陈写的，如果不行就怪hzs"
-        android:textSize="10sp" />
+        android:text="项目需要维护人员，有兴趣可以联系QQ：1078324570"
+        android:textSize="16sp" />
+
 
 </LinearLayout>

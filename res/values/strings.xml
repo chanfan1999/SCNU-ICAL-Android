@@ -41,4 +41,8 @@
     <string name="xqm">
         3
     </string>
+    <string name="openSource">项目开源地址：</string>
+    <string name="openSourceLink">https://github.com/chanfan1999/SCNU_ICAL_Android</string>
+    <string name="credit">Credit：</string>
+    <string name="creditList">由@lnm011223提供新图标支持和测试帮助</string>
 </resources>
