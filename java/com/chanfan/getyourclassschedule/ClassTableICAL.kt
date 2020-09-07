@@ -36,25 +36,25 @@ class ClassTableICAL {
         }
 
 
-        private var beginTimeShiPai = arrayOf(
+        private val beginTimeShiPai = arrayOf(
             "0", "083000", "092000", "102000", "111000",
             "143000", "152000", "161000", "170000",
             "190000", "195000", "204000"
         )
-        private var endTimeShiPai = arrayOf(
+        private val endTimeShiPai = arrayOf(
             "0", "091000", "100000", "110000", "115000",
             "151000", "160000", "165000", "174000",
             "194000", "203000", "212000"
         )
 
-        private var beginTimeElse = arrayOf(
+        private val beginTimeElse = arrayOf(
             "0", "083000", "092000", "102000", "111000",
             "140000", "145000", "154000", "163000",
             "190000", "195000", "204000"
         )
 
 
-        private var endTimeElse = arrayOf(
+        private val endTimeElse = arrayOf(
             "0", "091000", "100000", "110000", "115000",
             "144000", "153000", "162000", "171000",
             "194000", "203000", "212000"
