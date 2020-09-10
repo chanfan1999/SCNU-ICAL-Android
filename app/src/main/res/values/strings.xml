@@ -1,0 +1,50 @@
+<resources>
+    <string name="app_name">课表获取</string>
+    <string name="ie">
+        这是一个能把课表导入到手机日历的应用
+    </string>
+    <string name="briefText">开发者承诺在未经用户授权的情况下不对用户数据进行任何储存或使用\n
+        1.  在选择网络模式获取时，需要你的账号信息进行统一身份验证登录，以获取课表信息。该模式需要联网。\n
+        2.  尽管代码开源，你可以随时随地在github上查看应用是否存在恶意代码，但你当然没有任何必要信任我。
+            因此应用也提供了离线获取模式。
+            你可以粘贴自行获取的课表信息Json文本，在不输入账户密码的条件下完成课表的写入。\n
+        3.  无论哪种模式都需要授予日历读写权限，显然这是因为你在使用一个读写日历的应用。\n
+    </string>
+    <string name="guide">登录获取模式：
+        在左侧栏中选择登录获取功能，输入账号，密码和验证码(如果还在使用身份证号后六位的初始密码要先进行修改)，静候佳音即可。\n
+        离线获取模式：
+        用电脑端登录到你的教务系统的课表界面，按F12后刷新页面，找到下图的文件，复制响应内容到本应用的输入框即可。\n
+        可尝试用qq等方式发送到手机。微信的文件传输助手处理长文本会截断，导致本应用无法正确处理数据。
+
+    </string>
+    <string name="title_activity_image">FullscreenActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="en_login_info">SSO services authentication</string>
+    <string name="cn_login_info">统一身份验证登录</string>
+    <string name="account">账号</string>
+    <string name="password">密码</string>
+    <string name="verifyCode">验证码</string>
+    <string name="verifyCodeLink">
+        https://sso.scnu.edu.cn/AccountService/user/rancode.jpg
+    </string>
+    <string name="loginLink">
+           https://sso.scnu.edu.cn/AccountService/user/login.html
+    </string>
+    <string name="jwxtLink">
+        https://sso.scnu.edu.cn/AccountService/openapi/onekeyapp.html?id=96
+    </string>
+    <string name="dataLink">
+        https://jwxt.scnu.edu.cn/kbcx/xskbcx_cxXsKb.html?gnmkdm=N253508
+    </string>
+    <string name="xnm">
+        2020
+    </string>
+    <string name="xqm">
+        3
+    </string>
+    <string name="openSource">项目开源地址：</string>
+    <string name="openSourceLink">https://github.com/chanfan1999/SCNU_ICAL_Android</string>
+    <string name="credit">Credit：</string>
+    <string name="creditList">由@lnm011223提供新图标支持和测试帮助</string>
+</resources>
