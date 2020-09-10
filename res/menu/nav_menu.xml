@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/welcome"
+            android:title="欢迎/说明"
+            android:icon="@drawable/ic_welcome" />
+        <item
+            android:id="@+id/getViaNet"
+            android:title="登陆获取"
+            android:icon="@drawable/ic_net" />
+        <item
+            android:id="@+id/getViaText"
+            android:title="本地生成"
+            android:icon="@drawable/ic_text" />
+        <item
+            android:id="@+id/about"
+            android:title="关于本项目"
+            android:icon="@drawable/ic_about" />
+    </group>
+</menu>
