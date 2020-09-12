@@ -19,7 +19,7 @@ class SugarICAL {
         var DTEnd: String = "20200629T110000",
         var RRule: String = WEEKLY,
         var count: String = "0",
-        var alertDescription: String = "是时候出发去上${summary}啦"
+        var alertDescription: String = "是时候出发去${location}上${summary}啦"
     )
 
     class Calender {
