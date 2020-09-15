@@ -14,9 +14,11 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
-import com.chanfan.getyourclassschedule.TextModeFragment.Companion.ERROR
-import com.chanfan.getyourclassschedule.TextModeFragment.Companion.EXISTED
-import com.chanfan.getyourclassschedule.TextModeFragment.Companion.FINISHED
+import com.chanfan.getyourclassschedule.ProcessResultValues.ERROR
+import com.chanfan.getyourclassschedule.ProcessResultValues.EXISTED
+import com.chanfan.getyourclassschedule.ProcessResultValues.FINISHED
+import com.chanfan.getyourclassschedule.ProcessResultValues.PROCESSING
+import com.chanfan.getyourclassschedule.ProcessResultValues.RANDCODEERROR
 import kotlinx.android.synthetic.main.net_mode_fragment.*
 import okhttp3.ResponseBody
 import retrofit2.Call
@@ -44,6 +46,7 @@ class NetModeFragment : Fragment() {
             override fun handleMessage(msg: Message) {
                 super.handleMessage(msg)
                 when (msg.what) {
+
                     FINISHED -> {
                         mainActivity.loadingDialog.dismiss()
                         mainActivity.shareDialog.show()
@@ -56,6 +59,10 @@ class NetModeFragment : Fragment() {
                         mainActivity.loadingDialog.dismiss()
                         Toast.makeText(context, "文件已经存在了", Toast.LENGTH_SHORT).show()
                         mainActivity.shareDialog.show()
+                    }
+                    PROCESSING -> {
+                        mainActivity.loadingDialog.show()
+                        Toast.makeText(context, "正在处理", Toast.LENGTH_SHORT).show()
                     }
                 }
             }
@@ -118,6 +125,7 @@ class NetModeFragment : Fragment() {
 
 
     private fun writeCalendar() {
+
         val f = File(context?.filesDir!!.path, "new.ics")
         if (!f.exists()) {
             val ac = account.text.toString()
@@ -126,47 +134,63 @@ class NetModeFragment : Fragment() {
             if (ac == "" || pw == "" || rc == "") {
                 Toast.makeText(context, "请输入账号信息", Toast.LENGTH_SHORT).show()
             } else {
-
-                mainActivity.loadingDialog.show()
                 thread {
-                    val loginForm = mapOf(
-                        "account" to ac,
-                        "password" to pw,
-                        "rancode" to rc,
-                        "client_id" to "",
-                        "response_type" to "",
-                        "redirect_url" to "",
-                        "jump" to ""
-                    )
-                    //异步会发生顺序错误导致无法登陆
-                    loginService.post(
-                        loginForm, getString(R.string.loginLink)
-                    ).execute()
-                    loginService.get(getString(R.string.jwxtLink))
-                        .execute()
-                    val formData =
-                        mapOf("xnm" to getString(R.string.xnm), "xqm" to getString(R.string.xqm))
-                    val classData = loginService.post(
-                        formData, getString(R.string.dataLink)
+                    val randCode = mapOf("random" to rc)
+                    val info: String? = loginService.post(
+                        randCode,
+                        "https://sso.scnu.edu.cn/AccountService/user/checkrandom.html"
                     ).execute().body()?.string()
-                    try {
-                        if (classData != null)
-                            if (SHIPAI.isChecked)
-                                ClassTableICAL.handleTextData(classData, ClassTableICAL.SHIPAI)
-                            else
-                                ClassTableICAL.handleTextData(classData, ClassTableICAL.NANHAI)
-                        handler.sendMessage(Message().apply {
-                            what = FINISHED
+                    if (info.equals("false")) {
+                        Looper.prepare()
+                        Toast.makeText(context, "验证码不正确", Toast.LENGTH_SHORT).show()
+                        Looper.loop()
+                    } else {
+                        handler.sendMessage(Message.obtain().apply {
+                            what = PROCESSING
                         })
-                    } catch (e: Exception) {
-                        handler.sendMessage(Message().apply {
-                            what = ERROR
-                        })
+
+                        val loginForm = mapOf(
+                            "account" to ac,
+                            "password" to pw,
+                            "rancode" to rc,
+                            "client_id" to "",
+                            "response_type" to "",
+                            "redirect_url" to "",
+                            "jump" to ""
+                        )
+                        //异步会发生顺序错误导致无法登陆
+                        loginService.post(
+                            loginForm, getString(R.string.loginLink)
+                        ).execute()
+                        loginService.get(getString(R.string.jwxtLink))
+                            .execute()
+                        val formData =
+                            mapOf(
+                                "xnm" to getString(R.string.xnm),
+                                "xqm" to getString(R.string.xqm)
+                            )
+                        val classData = loginService.post(
+                            formData, getString(R.string.dataLink)
+                        ).execute().body()?.string()
+                        try {
+                            if (classData != null)
+                                if (SHIPAI.isChecked)
+                                    ClassTableICAL.handleTextData(classData, ClassTableICAL.SHIPAI)
+                                else
+                                    ClassTableICAL.handleTextData(classData, ClassTableICAL.NANHAI)
+                            handler.sendMessage(Message.obtain().apply {
+                                what = FINISHED
+                            })
+                        } catch (e: Exception) {
+                            handler.sendMessage(Message.obtain().apply {
+                                what = ERROR
+                            })
+                        }
                     }
                 }
             }
         } else {
-            handler.sendMessage(Message().apply {
+            handler.sendMessage(Message.obtain().apply {
                 what = EXISTED
             })
         }

@@ -13,6 +13,10 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
+import com.chanfan.getyourclassschedule.ProcessResultValues.ERROR
+import com.chanfan.getyourclassschedule.ProcessResultValues.EXISTED
+import com.chanfan.getyourclassschedule.ProcessResultValues.FINISHED
+import com.chanfan.getyourclassschedule.ProcessResultValues.RANDCODEERROR
 import kotlinx.android.synthetic.main.text_mode_fragment.*
 import kotlinx.android.synthetic.main.text_mode_fragment.view.*
 import java.io.File
@@ -23,11 +27,6 @@ class TextModeFragment : Fragment() {
     lateinit var handler: Handler
     lateinit var mainActivity: MainActivity
 
-    companion object {
-        val FINISHED = 1
-        val ERROR = 0
-        val EXISTED = 2
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -51,7 +50,9 @@ class TextModeFragment : Fragment() {
                     EXISTED -> {
                         mainActivity.loadingDialog.dismiss()
                         Toast.makeText(context, "~", Toast.LENGTH_SHORT).show()
-
+                    }
+                    RANDCODEERROR ->{
+                        mainActivity
                     }
                 }
             }
@@ -107,11 +108,11 @@ class TextModeFragment : Fragment() {
                         } else {
                             ClassTableICAL.handleTextData(data, ClassTableICAL.NANHAI)
                         }
-                        handler.sendMessage(Message().apply {
+                        handler.sendMessage(Message.obtain().apply {
                             what = FINISHED
                         })
                     } catch (e: Exception) {
-                        handler.sendMessage(Message().apply {
+                        handler.sendMessage(Message.obtain().apply {
                             what = ERROR
                         })
                     }
@@ -120,7 +121,7 @@ class TextModeFragment : Fragment() {
                 Toast.makeText(context, "请输入文本信息", Toast.LENGTH_SHORT).show()
             }
         } else {
-            handler.sendMessage(Message().apply {
+            handler.sendMessage(Message.obtain().apply {
                 what = EXISTED
             })
         }
