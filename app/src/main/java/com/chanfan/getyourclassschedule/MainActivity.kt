@@ -18,6 +18,7 @@ class MainActivity : AppCompatActivity() {
     private val textModeFragment = TextModeFragment()
     private val netModeFragment = NetModeFragment()
     private val aboutFragment = AboutFragment()
+    private val focusFragment = FocusFragment()
     lateinit var shareDialog: AlertDialog
     lateinit var loadingDialog: AlertDialog
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -77,6 +78,9 @@ class MainActivity : AppCompatActivity() {
                 }
                 R.id.about -> {
                     replaceFragment(aboutFragment)
+                }
+                R.id.focus -> {
+                    replaceFragment(focusFragment)
                 }
             }
             drawerLayout.closeDrawers()
