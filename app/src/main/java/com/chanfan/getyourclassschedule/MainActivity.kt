@@ -20,7 +20,7 @@ class MainActivity : AppCompatActivity() {
     private val aboutFragment = AboutFragment()
     private val focusFragment = FocusFragment()
 
-    val fragmentManager = supportFragmentManager
+    private val fragmentManager = supportFragmentManager
     lateinit var shareDialog: AlertDialog
     lateinit var loadingDialog: AlertDialog
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -82,6 +82,7 @@ class MainActivity : AppCompatActivity() {
                     replaceFragment(aboutFragment)
                 }
                 R.id.focus -> {
+                    title = "全神贯注"
                     replaceFragment(focusFragment)
                 }
             }
