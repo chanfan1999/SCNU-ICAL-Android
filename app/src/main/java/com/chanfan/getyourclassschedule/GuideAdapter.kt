@@ -26,6 +26,7 @@ class GuideAdapter(val guideList: List<Any>) :
 
     class ImageInfoHolder(view: View) : RecyclerView.ViewHolder(view) {
         val image: ImageView = view.findViewById(R.id.imageInfo)
+        val imageText: TextView = view.findViewById(R.id.imageText)
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -79,6 +80,7 @@ class GuideAdapter(val guideList: List<Any>) :
                         ImageActivity.actionStart(context, msg.resID)
                     }
                 }
+                holder.imageText.text = msg.text
             }
         }
     }

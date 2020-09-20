@@ -24,7 +24,7 @@ class WelcomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         guideList.add(GuideText("隐私说明:", getString(R.string.briefText), null))
         guideList.add(GuideText("教程时间:", getString(R.string.guide), null))
-        guideList.add(ImageInfo(R.drawable.guide))
+        guideList.add(ImageInfo(R.drawable.guide,"点击查看大图"))
         val layoutManager = LinearLayoutManager(context)
         recyclerView.layoutManager = layoutManager
         val adapter = GuideAdapter(guideList)
