@@ -17,7 +17,7 @@ class FocusFragment:Fragment() {
     }
 
     override fun onCreateAnimation(transit: Int, enter: Boolean, nextAnim: Int): Animation? {
-
+        
         return super.onCreateAnimation(transit, enter, nextAnim)
     }
 }

@@ -6,9 +6,13 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.AnimationSet
+import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.chanfan.getyourclassschedule.GlobalApp.Companion.context
 
 
 class GuideAdapter(val guideList: List<Any>) :
@@ -19,15 +23,20 @@ class GuideAdapter(val guideList: List<Any>) :
         const val IMAGE = 1
     }
 
-
     class TextInfoHolder(view: View) : RecyclerView.ViewHolder(view) {
         val title: TextView = view.findViewById(R.id.title)
         val content: TextView = view.findViewById(R.id.content)
+
     }
 
     class ImageInfoHolder(view: View) : RecyclerView.ViewHolder(view) {
         val image: ImageView = view.findViewById(R.id.imageInfo)
         val imageText: TextView = view.findViewById(R.id.imageText)
+    }
+
+    override fun onViewAttachedToWindow(holder: RecyclerView.ViewHolder) {
+        super.onViewAttachedToWindow(holder)
+        holder.itemView.animation = AnimationUtils.loadAnimation(context,R.anim.card_in)
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -60,7 +69,7 @@ class GuideAdapter(val guideList: List<Any>) :
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
 
-        when (holder){
+        when (holder) {
             is TextInfoHolder -> {
                 val msg = guideList[position] as TextInfo
                 holder.title.text = msg.title
@@ -72,7 +81,7 @@ class GuideAdapter(val guideList: List<Any>) :
                     val options = BitmapFactory.Options()
                     options.inJustDecodeBounds = true
                     BitmapFactory.decodeResource(resources, msg.resID, options)
-                    options.inSampleSize = calculateInSampleSize(options,300)
+                    options.inSampleSize = calculateInSampleSize(options, 300)
                     options.inJustDecodeBounds = false
                     val bitmap = BitmapFactory.decodeResource(resources, msg.resID, options)
                     setImageBitmap(bitmap)
@@ -84,6 +93,8 @@ class GuideAdapter(val guideList: List<Any>) :
             }
         }
     }
+
+
 
     override fun getItemCount(): Int = guideList.size
 
