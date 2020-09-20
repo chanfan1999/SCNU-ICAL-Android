@@ -19,6 +19,8 @@ class MainActivity : AppCompatActivity() {
     private val netModeFragment = NetModeFragment()
     private val aboutFragment = AboutFragment()
     private val focusFragment = FocusFragment()
+
+    val fragmentManager = supportFragmentManager
     lateinit var shareDialog: AlertDialog
     lateinit var loadingDialog: AlertDialog
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -90,10 +92,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun replaceFragment(fragment: Fragment) {
-        val fragmentManager = supportFragmentManager
-        val transaction = fragmentManager.beginTransaction()
-        transaction.replace(R.id.rightLayout, fragment)
-        transaction.commit()
+        fragmentManager.beginTransaction().run {
+            setCustomAnimations(R.anim.fragment_in, R.anim.fragment_out)
+            replace(R.id.rightLayout, fragment)
+            commit()
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
