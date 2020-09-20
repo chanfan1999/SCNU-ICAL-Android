@@ -22,13 +22,11 @@ class WelcomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        guideList.add(GuideText("隐私说明:", getString(R.string.briefText), null))
-        guideList.add(GuideText("教程时间:", getString(R.string.guide), null))
+        guideList.add(TextInfo("隐私说明:", getString(R.string.briefText), null))
+        guideList.add(TextInfo("教程时间:", getString(R.string.guide), null))
         guideList.add(ImageInfo(R.drawable.guide,"点击查看大图"))
-        val layoutManager = LinearLayoutManager(context)
-        recyclerView.layoutManager = layoutManager
-        val adapter = GuideAdapter(guideList)
-        recyclerView.adapter = adapter
+        recyclerView.layoutManager = LinearLayoutManager(context)
+        recyclerView.adapter = GuideAdapter(guideList)
     }
 
     override fun onDestroy() {

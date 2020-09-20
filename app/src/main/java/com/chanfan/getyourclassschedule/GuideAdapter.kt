@@ -2,6 +2,7 @@ package com.chanfan.getyourclassschedule
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -31,7 +32,7 @@ class GuideAdapter(val guideList: List<Any>) :
 
     override fun getItemViewType(position: Int): Int {
         return when (guideList[position]){
-            is GuideText -> TEXT
+            is TextInfo -> TEXT
             is ImageInfo -> IMAGE
             else -> 0
         }
@@ -41,17 +42,17 @@ class GuideAdapter(val guideList: List<Any>) :
         when (viewType){
             TEXT -> {
                 val view = LayoutInflater.from(parent.context)
-                    .inflate(R.layout.guide, parent, false)
+                    .inflate(R.layout.text_guide, parent, false)
                 return TextInfoHolder(view)
             }
             IMAGE -> {
                 val view = LayoutInflater.from(parent.context)
-                    .inflate(R.layout.image_info_view, parent, false)
+                    .inflate(R.layout.image_guide, parent, false)
                 return ImageInfoHolder(view)
             }
             else -> {
                 val view = LayoutInflater.from(parent.context)
-                    .inflate(R.layout.guide, parent, false)
+                    .inflate(R.layout.text_guide, parent, false)
                 return TextInfoHolder(view)
             }
         }
@@ -61,7 +62,7 @@ class GuideAdapter(val guideList: List<Any>) :
 
         when (holder){
             is TextInfoHolder -> {
-                val msg = guideList[position] as GuideText
+                val msg = guideList[position] as TextInfo
                 holder.title.text = msg.title
                 holder.content.text = msg.content
             }
@@ -71,8 +72,7 @@ class GuideAdapter(val guideList: List<Any>) :
                     val options = BitmapFactory.Options()
                     options.inJustDecodeBounds = true
                     BitmapFactory.decodeResource(resources, msg.resID, options)
-                    options.inSampleSize = 2
-                    options.inPreferredConfig = Bitmap.Config.RGB_565
+                    options.inSampleSize = calculateInSampleSize(options,300)
                     options.inJustDecodeBounds = false
                     val bitmap = BitmapFactory.decodeResource(resources, msg.resID, options)
                     setImageBitmap(bitmap)
@@ -89,11 +89,12 @@ class GuideAdapter(val guideList: List<Any>) :
 
     private fun calculateInSampleSize(
         options: BitmapFactory.Options,
-        reqWidth: Int,
-        reqHeight: Int
+        reqWidth: Int
     ): Int {
+
         val width = options.outWidth
         val height = options.outHeight
+        val reqHeight = (reqWidth.toDouble()/width*height).toInt()
         var inSampleSize = 1
         val halfWidth = width / 2
         val halfHeight = height / 2

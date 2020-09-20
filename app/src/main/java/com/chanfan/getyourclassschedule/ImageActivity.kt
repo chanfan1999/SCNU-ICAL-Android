@@ -7,12 +7,6 @@ import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_image.*
 
 class ImageActivity : AppCompatActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_image)
-        val imgID = intent.getIntExtra("ImgResID", 0)
-        image.setImageResource(imgID)
-    }
 
     companion object {
         fun actionStart(context: Context, imageID: Int) {
@@ -22,5 +16,10 @@ class ImageActivity : AppCompatActivity() {
         }
     }
 
-
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_image)
+        val imgID = intent.getIntExtra("ImgResID", 0)
+        image.setImageResource(imgID)
+    }
 }
