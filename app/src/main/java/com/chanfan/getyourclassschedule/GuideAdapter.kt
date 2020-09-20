@@ -10,37 +10,74 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
 
-class GuideAdapter(val guideList: List<GuideText>) :
+class GuideAdapter(val guideList: List<Any>) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    class MyHolder(view: View) : RecyclerView.ViewHolder(view) {
+
+    companion object{
+        const val TEXT = 0
+        const val IMAGE = 1
+    }
+
+
+    class TextInfoHolder(view: View) : RecyclerView.ViewHolder(view) {
         val title: TextView = view.findViewById(R.id.title)
         val content: TextView = view.findViewById(R.id.content)
-        val image: ImageView = view.findViewById(R.id.guideImage)
+    }
+
+    class ImageInfoHolder(view: View) : RecyclerView.ViewHolder(view) {
+        val image: ImageView = view.findViewById(R.id.imageInfo)
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return when (guideList[position]){
+            is GuideText -> TEXT
+            is ImageInfo -> IMAGE
+            else -> 0
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.guide, parent, false)
-        return MyHolder(view)
+        when (viewType){
+            TEXT -> {
+                val view = LayoutInflater.from(parent.context)
+                    .inflate(R.layout.guide, parent, false)
+                return TextInfoHolder(view)
+            }
+            IMAGE -> {
+                val view = LayoutInflater.from(parent.context)
+                    .inflate(R.layout.image_info_view, parent, false)
+                return ImageInfoHolder(view)
+            }
+            else -> {
+                val view = LayoutInflater.from(parent.context)
+                    .inflate(R.layout.guide, parent, false)
+                return TextInfoHolder(view)
+            }
+        }
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val msg = guideList[position]
-        holder as MyHolder
-        holder.title.text = msg.title
-        holder.content.text = msg.content
-        if (msg.imageResID != null) {
-            holder.image.apply {
-                val options = BitmapFactory.Options()
-                options.inJustDecodeBounds = true
-                BitmapFactory.decodeResource(resources, msg.imageResID, options)
-                options.inSampleSize = 2
-                options.inPreferredConfig = Bitmap.Config.RGB_565
-                options.inJustDecodeBounds = false
-                val bitmap = BitmapFactory.decodeResource(resources, msg.imageResID, options)
-                setImageBitmap(bitmap)
-                setOnClickListener {
-                    ImageActivity.actionStart(context, msg.imageResID)
+
+        when (holder){
+            is TextInfoHolder -> {
+                val msg = guideList[position] as GuideText
+                holder.title.text = msg.title
+                holder.content.text = msg.content
+            }
+            is ImageInfoHolder -> {
+                val msg = guideList[position] as ImageInfo
+                holder.image.apply {
+                    val options = BitmapFactory.Options()
+                    options.inJustDecodeBounds = true
+                    BitmapFactory.decodeResource(resources, msg.resID, options)
+                    options.inSampleSize = 2
+                    options.inPreferredConfig = Bitmap.Config.RGB_565
+                    options.inJustDecodeBounds = false
+                    val bitmap = BitmapFactory.decodeResource(resources, msg.resID, options)
+                    setImageBitmap(bitmap)
+                    setOnClickListener {
+                        ImageActivity.actionStart(context, msg.resID)
+                    }
                 }
             }
         }

@@ -34,12 +34,5 @@
             android:layout_marginTop="0dp"
             android:textSize="18sp" />
 
-        <ImageView
-            android:id="@+id/guideImage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:adjustViewBounds="true" />
-
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>
