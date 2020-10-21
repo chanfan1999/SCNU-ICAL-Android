@@ -14,18 +14,18 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
+import com.alibaba.fastjson.JSONValidator
 import com.chanfan.getyourclassschedule.ProcessResultValues.ERROR
 import com.chanfan.getyourclassschedule.ProcessResultValues.EXISTED
 import com.chanfan.getyourclassschedule.ProcessResultValues.FINISHED
 import com.chanfan.getyourclassschedule.ProcessResultValues.PROCESSING
-import com.chanfan.getyourclassschedule.ProcessResultValues.RANDCODEERROR
 import kotlinx.android.synthetic.main.net_mode_fragment.*
+import kotlinx.coroutines.*
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.io.File
-import kotlin.concurrent.thread
 
 class NetModeFragment : Fragment() {
     private lateinit var loginService: LoginService
@@ -53,7 +53,7 @@ class NetModeFragment : Fragment() {
                     }
                     ERROR -> {
                         mainActivity.loadingDialog.dismiss()
-                        Toast.makeText(context, "出问题了~", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, msg.data.toString(), Toast.LENGTH_SHORT).show()
                     }
                     EXISTED -> {
                         mainActivity.loadingDialog.dismiss()
@@ -123,69 +123,80 @@ class NetModeFragment : Fragment() {
         }
     }
 
+    private fun doLogin(): String? {
+        val ac = account.text.toString()
+        val pw = password.text.toString()
+        val rc = verifyCode.text.toString()
+        if (ac == "" || pw == "" || rc == "") {
+            Toast.makeText(context, "请输入账号信息", Toast.LENGTH_SHORT).show()
+        } else {
+            val randCode = mapOf("random" to rc)
+            val info: String? = loginService.post(
+                randCode,
+                "https://sso.scnu.edu.cn/AccountService/user/checkrandom.html"
+            ).execute().body()?.string()
+            if (info.equals("false")) {
+                Looper.prepare()
+                Toast.makeText(context, "验证码不正确", Toast.LENGTH_SHORT).show()
+                Looper.loop()
+            } else {
+                handler.sendMessage(Message.obtain().apply {
+                    what = PROCESSING
+                })
+
+                val loginForm = mapOf(
+                    "account" to ac,
+                    "password" to pw,
+                    "rancode" to rc,
+                    "client_id" to "",
+                    "response_type" to "",
+                    "redirect_url" to "",
+                    "jump" to ""
+                )
+                //异步会发生顺序错误导致无法登陆
+                loginService.post(
+                    loginForm, getString(R.string.loginLink)
+                ).execute()
+                loginService.get(getString(R.string.jwxtLink))
+                    .execute()
+                val formData =
+                    mapOf(
+                        "xnm" to getString(R.string.xnm),
+                        "xqm" to getString(R.string.xqm)
+                    )
+                return loginService.post(
+                    formData, getString(R.string.dataLink)
+                ).execute().body()?.string()
+            }
+        }
+        return ""
+    }
+
 
     private fun writeCalendar() {
 
         val f = File(context?.filesDir!!.path, "new.ics")
         if (!f.exists()) {
-            val ac = account.text.toString()
-            val pw = password.text.toString()
-            val rc = verifyCode.text.toString()
-            if (ac == "" || pw == "" || rc == "") {
-                Toast.makeText(context, "请输入账号信息", Toast.LENGTH_SHORT).show()
-            } else {
-                thread {
-                    val randCode = mapOf("random" to rc)
-                    val info: String? = loginService.post(
-                        randCode,
-                        "https://sso.scnu.edu.cn/AccountService/user/checkrandom.html"
-                    ).execute().body()?.string()
-                    if (info.equals("false")) {
-                        Looper.prepare()
-                        Toast.makeText(context, "验证码不正确", Toast.LENGTH_SHORT).show()
-                        Looper.loop()
-                    } else {
+            val job = Job()
+            val scope = CoroutineScope(job)
+            scope.launch {
+                val classData = withContext(Dispatchers.Default) { doLogin() }
+                if (!classData.isNullOrBlank()) {
+                    try {
+                        if (!JSONValidator.from(classData).validate())
+                            throw java.lang.Exception("密码或者账号出错了")
+                        if (SHIPAI.isChecked)
+                            ClassTableICAL.handleTextData(classData, ClassTableICAL.SHIPAI)
+                        else
+                            ClassTableICAL.handleTextData(classData, ClassTableICAL.NANHAI)
                         handler.sendMessage(Message.obtain().apply {
-                            what = PROCESSING
+                            what = FINISHED
                         })
-
-                        val loginForm = mapOf(
-                            "account" to ac,
-                            "password" to pw,
-                            "rancode" to rc,
-                            "client_id" to "",
-                            "response_type" to "",
-                            "redirect_url" to "",
-                            "jump" to ""
-                        )
-                        //异步会发生顺序错误导致无法登陆
-                        loginService.post(
-                            loginForm, getString(R.string.loginLink)
-                        ).execute()
-                        loginService.get(getString(R.string.jwxtLink))
-                            .execute()
-                        val formData =
-                            mapOf(
-                                "xnm" to getString(R.string.xnm),
-                                "xqm" to getString(R.string.xqm)
-                            )
-                        val classData = loginService.post(
-                            formData, getString(R.string.dataLink)
-                        ).execute().body()?.string()
-                        try {
-                            if (classData != null)
-                                if (SHIPAI.isChecked)
-                                    ClassTableICAL.handleTextData(classData, ClassTableICAL.SHIPAI)
-                                else
-                                    ClassTableICAL.handleTextData(classData, ClassTableICAL.NANHAI)
-                            handler.sendMessage(Message.obtain().apply {
-                                what = FINISHED
-                            })
-                        } catch (e: Exception) {
-                            handler.sendMessage(Message.obtain().apply {
-                                what = ERROR
-                            })
-                        }
+                    } catch (e: Exception) {
+                        handler.sendMessage(Message.obtain().apply {
+                            what = ERROR
+                            obj = e.message
+                        })
                     }
                 }
             }

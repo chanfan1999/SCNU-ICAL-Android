@@ -19,6 +19,9 @@ import com.chanfan.getyourclassschedule.ProcessResultValues.FINISHED
 import com.chanfan.getyourclassschedule.ProcessResultValues.RANDCODEERROR
 import kotlinx.android.synthetic.main.text_mode_fragment.*
 import kotlinx.android.synthetic.main.text_mode_fragment.view.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 import java.io.File
 import kotlin.concurrent.thread
 
@@ -45,13 +48,13 @@ class TextModeFragment : Fragment() {
                     }
                     ERROR -> {
                         mainActivity.loadingDialog.dismiss()
-                        Toast.makeText(context, "出问题了~", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, msg.obj.toString(), Toast.LENGTH_SHORT).show()
                     }
                     EXISTED -> {
                         mainActivity.loadingDialog.dismiss()
-                        Toast.makeText(context, "~", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "文件已经存在了~", Toast.LENGTH_SHORT).show()
                     }
-                    RANDCODEERROR ->{
+                    RANDCODEERROR -> {
                         mainActivity
                     }
                 }
@@ -100,8 +103,10 @@ class TextModeFragment : Fragment() {
         val f = File(context?.filesDir!!.path, "new.ics")
         if (!f.exists()) {
             val data = textData.text.toString()
-            if (data != "") {
-                thread {
+            if (data.isNotBlank()) {
+                val job = Job()
+                val scope = CoroutineScope(job)
+                scope.launch {
                     try {
                         if (SHIPAI.isChecked) {
                             ClassTableICAL.handleTextData(data, ClassTableICAL.SHIPAI)
@@ -114,6 +119,7 @@ class TextModeFragment : Fragment() {
                     } catch (e: Exception) {
                         handler.sendMessage(Message.obtain().apply {
                             what = ERROR
+                            obj = "处理过程出问题了"
                         })
                     }
                 }
