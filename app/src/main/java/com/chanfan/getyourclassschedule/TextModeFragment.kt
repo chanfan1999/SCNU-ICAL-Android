@@ -23,13 +23,13 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import java.io.File
+import java.lang.ref.WeakReference
 import kotlin.concurrent.thread
 
 
 class TextModeFragment : Fragment() {
-    lateinit var handler: Handler
+    lateinit var handler: MyHandler
     lateinit var mainActivity: MainActivity
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -38,30 +38,7 @@ class TextModeFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.text_mode_fragment, container, false)
         mainActivity = activity as MainActivity
-        handler = object : Handler(Looper.myLooper()!!) {
-            override fun handleMessage(msg: Message) {
-                super.handleMessage(msg)
-                when (msg.what) {
-                    FINISHED -> {
-                        mainActivity.loadingDialog.dismiss()
-                        mainActivity.shareDialog.show()
-                    }
-                    ERROR -> {
-                        mainActivity.loadingDialog.dismiss()
-                        Toast.makeText(context, msg.obj.toString(), Toast.LENGTH_SHORT).show()
-                    }
-                    EXISTED -> {
-                        mainActivity.loadingDialog.dismiss()
-                        Toast.makeText(context, "文件已经存在了~", Toast.LENGTH_SHORT).show()
-                    }
-                    RANDCODEERROR -> {
-                        mainActivity
-                    }
-                }
-            }
-        }
-
-
+        handler = MyHandler(mainActivity)
         view.fabButton.setOnClickListener {
             if (hasPermissions(
                     GlobalApp.context,

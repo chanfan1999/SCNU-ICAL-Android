@@ -1,6 +1,7 @@
 package com.chanfan.getyourclassschedule
 
 import android.Manifest
+import android.app.Activity
 import android.content.Context
 import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
@@ -28,7 +29,7 @@ import retrofit2.Response
 import java.io.File
 
 class NetModeFragment : Fragment() {
-    private lateinit var loginService: LoginService
+    private val loginService = ServiceCreator.create(LoginService::class.java)
     lateinit var mainActivity: MainActivity
     private lateinit var handler: Handler
     override fun onCreateView(
@@ -39,36 +40,12 @@ class NetModeFragment : Fragment() {
         return inflater.inflate(R.layout.net_mode_fragment, container, false)
     }
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         mainActivity = activity as MainActivity
-        handler = object : Handler(Looper.myLooper()!!) {
-            override fun handleMessage(msg: Message) {
-                super.handleMessage(msg)
-                when (msg.what) {
-
-                    FINISHED -> {
-                        mainActivity.loadingDialog.dismiss()
-                        mainActivity.shareDialog.show()
-                    }
-                    ERROR -> {
-                        mainActivity.loadingDialog.dismiss()
-                        Toast.makeText(context, msg.data.toString(), Toast.LENGTH_SHORT).show()
-                    }
-                    EXISTED -> {
-                        mainActivity.loadingDialog.dismiss()
-                        Toast.makeText(context, "文件已经存在了", Toast.LENGTH_SHORT).show()
-                        mainActivity.shareDialog.show()
-                    }
-                    PROCESSING -> {
-                        mainActivity.loadingDialog.show()
-                        Toast.makeText(context, "正在处理", Toast.LENGTH_SHORT).show()
-                    }
-                }
-            }
-        }
+        handler = MyHandler(mainActivity)
         getCodePic.setOnClickListener {
-            loginService = ServiceCreator.create(LoginService::class.java)
             loginService.get(getString(R.string.verifyCodeLink))
                 .enqueue(object : Callback<ResponseBody> {
                     override fun onResponse(
@@ -212,4 +189,6 @@ class NetModeFragment : Fragment() {
         permissions.all {
             ActivityCompat.checkSelfPermission(context, it) == PackageManager.PERMISSION_GRANTED
         }
+
+
 }
