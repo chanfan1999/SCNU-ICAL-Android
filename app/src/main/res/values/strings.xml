@@ -32,7 +32,7 @@
            https://sso.scnu.edu.cn/AccountService/user/login.html
     </string>
     <string name="jwxtLink">
-        https://sso.scnu.edu.cn/AccountService/openapi/onekeyapp.html?id=96
+        https://sso.scnu.edu.cn/AccountService/openapi/onekeyapp.html?app_id=96
     </string>
     <string name="dataLink">
         https://jwxt.scnu.edu.cn/kbcx/xskbcx_cxXsKb.html?gnmkdm=N253508

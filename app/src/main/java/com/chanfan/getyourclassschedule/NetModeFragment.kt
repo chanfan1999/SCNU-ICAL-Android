@@ -1,7 +1,6 @@
 package com.chanfan.getyourclassschedule
 
 import android.Manifest
-import android.app.Activity
 import android.content.Context
 import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
@@ -182,7 +181,6 @@ class NetModeFragment : Fragment() {
                 what = EXISTED
             })
         }
-
     }
 
     private fun hasPermissions(context: Context, vararg permissions: String): Boolean =
