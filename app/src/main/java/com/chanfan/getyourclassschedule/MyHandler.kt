@@ -23,6 +23,7 @@ class MyHandler(mainActivity: MainActivity): Handler(Looper.myLooper()!!){
                 ProcessResultValues.EXISTED -> {
                     weakActivity.loadingDialog.dismiss()
                     Toast.makeText(weakActivity, "文件已经存在了~", Toast.LENGTH_SHORT).show()
+                    weakActivity.shareDialog.show()
                 }
                 ProcessResultValues.RANDCODEERROR -> {
                     weakActivity
