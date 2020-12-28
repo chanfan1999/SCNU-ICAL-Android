@@ -18,7 +18,7 @@ class MainActivity : AppCompatActivity() {
     private val textModeFragment = TextModeFragment()
     private val netModeFragment = NetModeFragment()
     private val aboutFragment = AboutFragment()
-    private val focusFragment = FocusFragment()
+    private val focusFragment = DebugFragment()
 
     private val fragmentManager = supportFragmentManager
     lateinit var shareDialog: AlertDialog
@@ -81,7 +81,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.about -> {
                     replaceFragment(aboutFragment)
                 }
-                R.id.focus -> {
+                R.id.debug -> {
                     title = "全神贯注"
                     replaceFragment(focusFragment)
                 }

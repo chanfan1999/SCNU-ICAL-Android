@@ -34,8 +34,11 @@
     <string name="jwxtLink">
         https://sso.scnu.edu.cn/AccountService/openapi/onekeyapp.html?app_id=96
     </string>
-    <string name="dataLink">
+    <string name="studentLink">
         https://jwxt.scnu.edu.cn/kbcx/xskbcx_cxXsKb.html?gnmkdm=N253508
+    </string>
+    <string name="teacherLink">
+        https://jwxt.scnu.edu.cn/kbcx/jskbcx_cxJsKb1.html?gnmkdm=N2150
     </string>
     <string name="xnm">
         2020
@@ -47,4 +50,5 @@
     <string name="openSourceLink">https://github.com/chanfan1999/SCNU_ICAL_Android</string>
     <string name="credit">Credit：</string>
     <string name="creditList">由@lnm011223提供新图标支持和测试帮助</string>
+    <string name="cleanAllText">删除所有事件和生成文件</string>
 </resources>

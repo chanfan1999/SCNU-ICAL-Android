@@ -123,7 +123,7 @@ class ClassTableICAL {
                 CalendarContract.Calendars._ID,
                 CalendarContract.Calendars.CALENDAR_DISPLAY_NAME
             )
-            var calID = ""
+            var calID: Long = 0
             var calName: String
             context.contentResolver.query(
                 CalendarContract.Calendars.CONTENT_URI,
@@ -133,7 +133,7 @@ class ClassTableICAL {
                 val idCol: Int = getColumnIndex(projection[0])
                 if (moveToFirst()) {
                     calName = getString(nameCol)
-                    calID = getString(idCol)
+                    calID = getLong(idCol)
                 }
                 close()
             }
@@ -144,10 +144,17 @@ class ClassTableICAL {
                     SimpleDateFormat(pattern, Locale.CHINA).parse(it.DTStart)?.time
                 val endMillis =
                     SimpleDateFormat(pattern, Locale.CHINA).parse(it.DTEnd)?.time
+                //用RFC5545格式表示的事件持续时间
+                val minutes = (endMillis!! - startMillis!!) / 60000
+                val duration = "PT${minutes.toInt()}M"
+                // 如果是重复事件，那么事件的结束时间就是null，重复事件要靠duration属性来声明
                 val values = ContentValues().apply {
                     put(CalendarContract.Events.CALENDAR_ID, calID)
                     put(CalendarContract.Events.DTSTART, startMillis)
-                    put(CalendarContract.Events.DTEND, endMillis)
+
+                    put(CalendarContract.Events.DURATION, duration)
+
+//                    put(CalendarContract.Events.DTEND, endMillis)
                     put(CalendarContract.Events.TITLE, it.summary)
                     put(CalendarContract.Events.EVENT_LOCATION, it.location)
                     put(CalendarContract.Events.RRULE, "FREQ=${it.RRule};COUNT=${it.count}")

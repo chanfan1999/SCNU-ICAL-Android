@@ -15,9 +15,9 @@
             android:icon="@drawable/ic_text"
             android:title="本地生成" />
         <item
-            android:id="@+id/focus"
-            android:icon="@drawable/ic_text"
-            android:title="全神贯注！" />
+            android:id="@+id/debug"
+            android:icon="@drawable/debug"
+            android:title="Debug！" />
         <item
             android:id="@+id/about"
             android:icon="@drawable/ic_about"
