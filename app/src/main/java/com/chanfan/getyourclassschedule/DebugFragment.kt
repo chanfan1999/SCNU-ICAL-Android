@@ -23,6 +23,26 @@ class DebugFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val idList = ArrayList<String>()
+
+        showAll.setOnClickListener {
+            context?.contentResolver?.query(
+                Uri.parse("content://com.android.calendar/events"), null,
+                null, null, null
+            )?.run {
+                while (moveToNext()) {
+                    val id = getString(getColumnIndex(CalendarContract.Events._ID))
+                    val title = getString(getColumnIndex("title"))
+                    val sl = getString(getColumnIndex("dtstart"))
+                    val se = getString(getColumnIndex(CalendarContract.Events.DURATION))
+                    Log.i("日历", "事件名称：$title")
+                    Log.i("日历", "事件id：$id")
+                    Log.i("日历", "开始时间：$sl")
+                    Log.i("日历", "持续时间：$se")
+                    idList.add(id)
+                }
+                close()
+            }
+        }
         deleteAllEvent.setOnClickListener {
             context?.contentResolver?.query(
                 Uri.parse("content://com.android.calendar/events"), null,
