@@ -6,7 +6,6 @@ import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.os.Handler
-import android.os.Looper
 import android.os.Message
 import android.view.LayoutInflater
 import android.view.View
@@ -19,6 +18,7 @@ import com.chanfan.getyourclassschedule.ProcessResultValues.ERROR
 import com.chanfan.getyourclassschedule.ProcessResultValues.EXISTED
 import com.chanfan.getyourclassschedule.ProcessResultValues.FINISHED
 import com.chanfan.getyourclassschedule.ProcessResultValues.PROCESSING
+import com.chanfan.getyourclassschedule.ProcessResultValues.RANDCODEERROR
 import kotlinx.android.synthetic.main.net_mode_fragment.*
 import kotlinx.coroutines.*
 import okhttp3.ResponseBody
@@ -112,9 +112,9 @@ class NetModeFragment : Fragment() {
                 "https://sso.scnu.edu.cn/AccountService/user/checkrandom.html"
             ).execute().body()?.string()
             if (info.equals("false")) {
-                Looper.prepare()
-                Toast.makeText(context, "验证码不正确", Toast.LENGTH_SHORT).show()
-                Looper.loop()
+                handler.sendMessage(Message.obtain().apply {
+                    what = RANDCODEERROR
+                })
             } else {
                 handler.sendMessage(Message.obtain().apply {
                     what = PROCESSING
@@ -140,9 +140,16 @@ class NetModeFragment : Fragment() {
                         "xnm" to getString(R.string.xnm),
                         "xqm" to getString(R.string.xqm)
                     )
-                return loginService.post(
-                    formData, getString(R.string.dataLink)
-                ).execute().body()?.string()
+                return if (ac.length != 11) {
+                    // 教师账号
+                    loginService.post(
+                        formData, getString(R.string.teacherLink)
+                    ).execute().body()?.string()
+                } else {
+                    loginService.post(
+                        formData, getString(R.string.studentLink)
+                    ).execute().body()?.string()
+                }
             }
         }
         return ""

@@ -26,7 +26,7 @@ class MyHandler(mainActivity: MainActivity): Handler(Looper.myLooper()!!){
                     weakActivity.shareDialog.show()
                 }
                 ProcessResultValues.RANDCODEERROR -> {
-                    weakActivity
+                    Toast.makeText(weakActivity, "验证码错误~", Toast.LENGTH_SHORT).show()
                 }
                 ProcessResultValues.PROCESSING -> {
                     weakActivity.loadingDialog.show()
