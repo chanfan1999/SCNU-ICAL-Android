@@ -33,6 +33,7 @@ hs_err_pid*
 # Built application files
 *.apk
 *.ap_
+*.aab
 
 # Files for the ART/Dalvik VM
 *.dex
@@ -72,6 +73,13 @@ captures/
 *~
 *.swp
 
+# Keystore files
+*.jks
+*.keystore
+
+# Google Services (e.g. APIs or Firebase)
+# google-services.json
+
 # Android Patch
 gen-external-apklibs
 
@@ -108,6 +116,9 @@ obj/
 .idea/dynamic.xml
 .idea/uiDesigner.xml
 .idea/assetWizardSettings.xml
+.idea/gradle.xml
+.idea/jarRepositories.xml
+.idea/navEditor.xml
 
 # OS-specific files
 .DS_Store
