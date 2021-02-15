@@ -1,3 +1,5 @@
+package com.chanfan.getyourclassschedule
+
 import java.io.BufferedWriter
 import java.io.File
 import java.io.FileOutputStream
@@ -16,7 +18,7 @@ class SugarICAL {
         var location: String = "",
         var description: String = "write something",
         var DTStart: String = "20200629T090000",
-        var DTEnd: String = "20200629T110000",
+        var duration: String = "PT120M",
         var RRule: String = WEEKLY,
         var count: String = "0",
         var alertDescription: String = "是时候出发去${location}上${summary}啦"
@@ -49,12 +51,12 @@ class SugarICAL {
                     write("LOCATION:${e.location}\n")
                     write("DESCRIPTION:${e.description}\n")
                     write("DTSTART:${e.DTStart}\n")
-                    write("DTEND:${e.DTEnd}\n")
+                    write("DURATION:${e.duration}\n")
                     write("RRULE:FREQ=${e.RRule};")
                     write("COUNT=${e.count}\n")
                     write(
                         "BEGIN:VALARM\nACTION:DISPLAY\nTRIGGER;RELATED=START:-PT20M \nDESCRIPTION:${
-                            e.alertDescription
+                        e.alertDescription
                         }\nEND:VALARM\nEND:VEVENT\n"
                     )
                 }

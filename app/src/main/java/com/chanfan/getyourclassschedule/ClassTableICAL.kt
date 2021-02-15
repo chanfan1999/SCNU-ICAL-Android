@@ -1,6 +1,5 @@
 package com.chanfan.getyourclassschedule
 
-import SugarICAL
 import android.content.ContentValues
 import android.content.Context
 import android.provider.CalendarContract
@@ -18,8 +17,8 @@ import java.util.regex.Pattern
 class ClassTableICAL {
 
     companion object {
-        val SHIPAI: Int = 1
-        val NANHAI: Int = 2
+        const val SHIPAI: Int = 1
+        const val NANHAI: Int = 2
         private val calender = SugarICAL.Calender()
         private const val pattern = "yyyyMMdd'T'HHmmSS"
 
@@ -74,46 +73,58 @@ class ClassTableICAL {
                 val teacherName = get("xm") as String //教师名称，如“曹阳MM”
 
                 //将如“1-17周”中的1和17提取出来
-                val regEx = "\\d+"
+                val regEx = "\\d*"
                 val m = Pattern.compile(regEx).matcher(period)
                 var isBegin = true
                 //循环是为了处理类似“1-9周12-16周”的情况
                 while (m.find()) {
                     if (isBegin) {
-                        beginWeek = m.group(0).toInt()
-                        isBegin = false
-                    } else {
-                        endWeek = m.group(0).toInt()
-                        weekNumber = endWeek - beginWeek + 1
-                        //将“1-3”节课提取出来用于计算时间
-                        val last = lastTime.split("-".toRegex()).toTypedArray()
-                        val begin = last[0].toInt()
-                        val end = last[1].toInt()
-                        val createDate: String = calculateDate(beginWeek, weekday.toInt())
-                        lateinit var startTime: String
-                        lateinit var endTime: String
-                        when (zone) {
-                            SHIPAI -> {
-                                startTime = createDate + "T" + beginTimeShiPai[begin]
-                                endTime = createDate + "T" + endTimeShiPai[end]
-                            }
-                            else -> {
-                                startTime = createDate + "T" + beginTimeElse[begin]
-                                endTime = createDate + "T" + endTimeElse[end]
-                            }
+                        val temp = m.group(0)
+                        if (temp != null && temp.isNotEmpty()) {
+                            beginWeek = temp.toInt()
+                            isBegin = false
                         }
+                    } else {
+                        val temp = m.group(0)
+                        if (temp != null && temp.isNotEmpty()) {
+                            endWeek = temp.toInt()
+                            weekNumber = endWeek - beginWeek + 1
+                            //将“1-3”节课提取出来用于计算时间
+                            val lastArray = lastTime.split("-".toRegex())
+                            val begin = lastArray[0].toInt()
+                            val end = lastArray[1].toInt()
+                            val createDate: String = calculateDate(beginWeek, weekday.toInt())
+                            lateinit var startTime: String
+                            lateinit var duration: String
+                            lateinit var endTime: String
 
-                        val event = SugarICAL.Event(
-                            summary = className,
-                            location = location,
-                            description = teacherName,
-                            DTStart = startTime,
-                            DTEnd = endTime,
-                            count = weekNumber.toString()
-                        )
-                        calender.addEvent(event)
-                        isBegin = true
+                            when (zone) {
+                                SHIPAI -> {
+                                    startTime = createDate + "T" + beginTimeShiPai[begin]
+                                    endTime = createDate + "T" + endTimeShiPai[end]
+                                    duration = getDuration(startTime, endTime)
+                                }
+                                else -> {
+                                    startTime = createDate + "T" + beginTimeElse[begin]
+                                    endTime = createDate + "T" + endTimeElse[end]
+                                    duration = getDuration(startTime, endTime)
+                                }
+                            }
+
+                            val event = SugarICAL.Event(
+                                summary = className,
+                                location = location,
+                                description = teacherName,
+                                DTStart = startTime,
+                                duration = duration,
+                                count = weekNumber.toString()
+                            )
+                            calender.addEvent(event)
+                            isBegin = true
+                        }
                     }
+
+
                 }
             }
         }
@@ -142,18 +153,11 @@ class ClassTableICAL {
             calender.events.forEach {
                 val startMillis =
                     SimpleDateFormat(pattern, Locale.CHINA).parse(it.DTStart)?.time
-                val endMillis =
-                    SimpleDateFormat(pattern, Locale.CHINA).parse(it.DTEnd)?.time
-                //用RFC5545格式表示的事件持续时间
-                val minutes = (endMillis!! - startMillis!!) / 60000
-                val duration = "PT${minutes.toInt()}M"
                 // 如果是重复事件，那么事件的结束时间就是null，重复事件要靠duration属性来声明
                 val values = ContentValues().apply {
                     put(CalendarContract.Events.CALENDAR_ID, calID)
                     put(CalendarContract.Events.DTSTART, startMillis)
-
-                    put(CalendarContract.Events.DURATION, duration)
-
+                    put(CalendarContract.Events.DURATION, it.duration)
 //                    put(CalendarContract.Events.DTEND, endMillis)
                     put(CalendarContract.Events.TITLE, it.summary)
                     put(CalendarContract.Events.EVENT_LOCATION, it.location)
@@ -190,12 +194,12 @@ class ClassTableICAL {
                     write("LOCATION:${e.location}\n")
                     write("DESCRIPTION:${e.description}\n")
                     write("DTSTART:${e.DTStart}\n")
-                    write("DTEND:${e.DTEnd}\n")
+                    write("DURATION:${e.duration}\n")
                     write("RRULE:FREQ=${e.RRule};")
                     write("COUNT=${e.count}\n")
                     write(
                         "BEGIN:VALARM\nACTION:DISPLAY\nTRIGGER;RELATED=START:-PT20M \nDESCRIPTION:${
-                            e.alertDescription
+                        e.alertDescription
                         }\nEND:VALARM\nEND:VEVENT\n"
                     )
                 }
@@ -204,6 +208,15 @@ class ClassTableICAL {
             writer.close()
             output.close()
             calender.events.clear()
+        }
+
+        fun getDuration(DTStart: String, DTEnd: String): String {
+            val startMillis =
+                SimpleDateFormat(pattern, Locale.CHINA).parse(DTStart)?.time
+            val endMillis =
+                SimpleDateFormat(pattern, Locale.CHINA).parse(DTEnd)?.time
+            val minutes = (endMillis!! - startMillis!!) / 60000
+            return "PT${minutes.toInt()}M"
         }
 
         fun handleTextData(data: String, zone: Int) {
