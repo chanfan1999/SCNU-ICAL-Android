@@ -51,4 +51,6 @@
     <string name="credit">Credit：</string>
     <string name="creditList">由@lnm011223提供新图标支持和测试帮助</string>
     <string name="cleanAllText">删除所有事件和生成文件</string>
+    <string name="open">打开某个东西</string>
+    <string name="showAll">展示所有</string>
 </resources>
