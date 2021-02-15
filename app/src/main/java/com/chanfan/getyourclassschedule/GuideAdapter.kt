@@ -1,18 +1,12 @@
 package com.chanfan.getyourclassschedule
 
-import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.Animation
-import android.view.animation.AnimationSet
-import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.chanfan.getyourclassschedule.GlobalApp.Companion.context
 
 
 class GuideAdapter(val guideList: List<Any>) :
@@ -36,7 +30,7 @@ class GuideAdapter(val guideList: List<Any>) :
 
     override fun onViewAttachedToWindow(holder: RecyclerView.ViewHolder) {
         super.onViewAttachedToWindow(holder)
-        holder.itemView.animation = AnimationUtils.loadAnimation(context,R.anim.card_in)
+//        holder.itemView.animation = AnimationUtils.loadAnimation(context,R.anim.card_in)
     }
 
     override fun getItemViewType(position: Int): Int {

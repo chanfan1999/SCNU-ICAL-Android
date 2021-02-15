@@ -10,17 +10,25 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/cleanAllText"
+        app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="110dp"
-        tools:layout_editor_absoluteY="29dp" />
+        tools:layout_editor_absoluteX="110dp" />
 
     <Button
         android:id="@+id/showAll"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="展示所有"
-        app:layout_constraintTop_toBottomOf="@id/deleteAllEvent"
+        android:text="@string/showAll"
+        app:layout_constraintTop_toBottomOf="@+id/deleteAllEvent"
         tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="110dp"
-        tools:layout_editor_absoluteY="29dp" />
+        tools:layout_editor_absoluteX="110dp" />
+
+    <Button
+        android:id="@+id/open"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/open"
+        app:layout_constraintTop_toBottomOf="@+id/showAll"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="111dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

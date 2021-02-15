@@ -6,8 +6,8 @@ import android.os.Message
 import android.widget.Toast
 import java.lang.ref.WeakReference
 
-class MyHandler(mainActivity: MainActivity): Handler(Looper.myLooper()!!){
-    private val weakActivity = WeakReference<MainActivity>(mainActivity).get()
+class MyHandler(mainActivity: MainActivity2) : Handler(Looper.myLooper()!!) {
+    private val weakActivity = WeakReference<MainActivity2>(mainActivity).get()
     override fun handleMessage(msg: Message) {
         super.handleMessage(msg)
         weakActivity?.let {

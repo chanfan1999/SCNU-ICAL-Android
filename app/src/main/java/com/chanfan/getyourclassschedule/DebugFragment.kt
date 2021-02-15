@@ -1,5 +1,6 @@
 package com.chanfan.getyourclassschedule
 
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.CalendarContract
@@ -75,7 +76,10 @@ class DebugFragment : Fragment() {
                 f.delete()
                 Log.i("已删除", "清理成功")
             }
+        }
 
+        open.setOnClickListener {
+            startActivity(Intent(context, MainActivity2::class.java))
         }
     }
 

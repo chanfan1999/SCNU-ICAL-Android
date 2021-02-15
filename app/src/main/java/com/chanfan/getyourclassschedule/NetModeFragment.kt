@@ -29,7 +29,7 @@ import java.io.File
 
 class NetModeFragment : Fragment() {
     private val loginService = ServiceCreator.create(LoginService::class.java)
-    lateinit var mainActivity: MainActivity
+    lateinit var mainActivity: MainActivity2
     private lateinit var handler: Handler
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,7 +42,7 @@ class NetModeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        mainActivity = activity as MainActivity
+        mainActivity = activity as MainActivity2
         handler = MyHandler(mainActivity)
         getCodePic.setOnClickListener {
             loginService.get(getString(R.string.verifyCodeLink))

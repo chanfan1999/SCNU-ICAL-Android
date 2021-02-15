@@ -4,8 +4,6 @@ import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.os.Message
 import android.view.LayoutInflater
 import android.view.View
@@ -16,20 +14,17 @@ import androidx.fragment.app.Fragment
 import com.chanfan.getyourclassschedule.ProcessResultValues.ERROR
 import com.chanfan.getyourclassschedule.ProcessResultValues.EXISTED
 import com.chanfan.getyourclassschedule.ProcessResultValues.FINISHED
-import com.chanfan.getyourclassschedule.ProcessResultValues.RANDCODEERROR
 import kotlinx.android.synthetic.main.text_mode_fragment.*
 import kotlinx.android.synthetic.main.text_mode_fragment.view.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import java.io.File
-import java.lang.ref.WeakReference
-import kotlin.concurrent.thread
 
 
 class TextModeFragment : Fragment() {
     lateinit var handler: MyHandler
-    lateinit var mainActivity: MainActivity
+    lateinit var mainActivity: MainActivity2
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,7 +32,7 @@ class TextModeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.text_mode_fragment, container, false)
-        mainActivity = activity as MainActivity
+        mainActivity = activity as MainActivity2
         handler = MyHandler(mainActivity)
         view.fabButton.setOnClickListener {
             if (hasPermissions(

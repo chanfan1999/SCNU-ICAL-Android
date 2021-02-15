@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MotionScene xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:motion="http://schemas.android.com/apk/res-auto">
+
+    <Transition
+        motion:constraintSetEnd="@id/informationDetail"
+        motion:constraintSetStart="@id/start"
+        motion:duration="300"
+        motion:motionInterpolator="linear">
+
+        <OnClick
+            motion:clickAction="toggle"
+            motion:targetId="@id/information" />
+
+
+        <KeyFrameSet>
+            <KeyAttribute
+                android:scaleX="0.7"
+                android:scaleY="0.7"
+                motion:framePosition="20"
+                motion:motionTarget="@id/information" />
+        </KeyFrameSet>
+    </Transition>
+
+    <Transition
+        motion:constraintSetEnd="@id/netModeDetail"
+        motion:constraintSetStart="@id/start"
+        motion:duration="300"
+        motion:motionInterpolator="linear">
+
+        <OnClick
+            motion:clickAction="toggle"
+            motion:targetId="@id/netMode" />
+
+
+        <KeyFrameSet>
+            <KeyAttribute
+                android:scaleX="0.7"
+                android:scaleY="0.7"
+                motion:framePosition="20"
+                motion:motionTarget="@id/netMode" />
+        </KeyFrameSet>
+    </Transition>
+
+    <Transition
+        motion:constraintSetEnd="@id/textModeDetail"
+        motion:constraintSetStart="@id/start"
+        motion:duration="300"
+        motion:motionInterpolator="linear">
+
+        <OnClick
+            motion:clickAction="toggle"
+            motion:targetId="@id/textMode" />
+
+
+        <KeyFrameSet>
+            <KeyAttribute
+                android:scaleX="0.7"
+                android:scaleY="0.7"
+                motion:framePosition="20"
+                motion:motionTarget="@id/textMode" />
+        </KeyFrameSet>
+    </Transition>
+
+    <Transition
+        motion:constraintSetEnd="@id/debugModeDetail"
+        motion:constraintSetStart="@id/start"
+        motion:duration="300"
+        motion:motionInterpolator="linear">
+
+        <OnClick
+            motion:clickAction="toggle"
+            motion:targetId="@id/debugMode" />
+
+
+        <KeyFrameSet>
+            <KeyAttribute
+                android:scaleX="0.7"
+                android:scaleY="0.7"
+                motion:framePosition="20"
+                motion:motionTarget="@id/debugMode" />
+        </KeyFrameSet>
+    </Transition>
+
+
+    <ConstraintSet android:id="@+id/start">
+        <Constraint
+            android:id="@id/information"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            motion:layout_constraintBottom_toTopOf="@+id/netMode"
+            motion:layout_constraintTop_toBottomOf="@id/toolBar" />
+        <Constraint
+            android:id="@id/netMode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            motion:layout_constraintBottom_toTopOf="@id/textMode"
+            motion:layout_constraintTop_toBottomOf="@id/information" />
+        <Constraint
+            android:id="@id/textMode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="0dp"
+            motion:layout_constraintBottom_toTopOf="@id/debugMode"
+            motion:layout_constraintTop_toBottomOf="@id/netMode" />
+        <Constraint
+            android:id="@id/debugMode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="0dp"
+            motion:layout_constraintBottom_toBottomOf="parent"
+            motion:layout_constraintTop_toBottomOf="@id/textMode" />
+    </ConstraintSet>
+
+    <ConstraintSet android:id="@+id/informationDetail">
+        <Constraint
+            android:id="@id/information"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            motion:layout_constraintBottom_toBottomOf="parent"
+            motion:layout_constraintTop_toBottomOf="@id/toolBar" />
+        <Constraint
+            android:id="@id/netMode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            motion:layout_constraintBottom_toTopOf="@id/textMode"
+            motion:layout_constraintTop_toBottomOf="@id/information" />
+        <Constraint
+            android:id="@id/textMode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            motion:layout_constraintBottom_toTopOf="@id/debugMode"
+            motion:layout_constraintLeft_toLeftOf="parent"
+            motion:layout_constraintTop_toBottomOf="@id/netMode" />
+        <Constraint
+            android:id="@id/debugMode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            motion:layout_constraintLeft_toLeftOf="parent"
+            motion:layout_constraintTop_toBottomOf="@id/textMode" />
+    </ConstraintSet>
+
+    <ConstraintSet android:id="@+id/netModeDetail">
+        <Constraint
+            android:id="@id/netMode"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            motion:layout_constraintBottom_toBottomOf="parent"
+            motion:layout_constraintTop_toBottomOf="@id/toolBar" />
+        <Constraint
+            android:id="@+id/information"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            motion:layout_constraintBottom_toTopOf="@id/toolBar" />
+        <Constraint
+            android:id="@+id/textMode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            motion:layout_constraintBottom_toTopOf="@id/debugMode"
+            motion:layout_constraintTop_toBottomOf="@id/netMode" />
+        <Constraint
+            android:id="@+id/debugMode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            motion:layout_constraintLeft_toLeftOf="parent"
+            motion:layout_constraintTop_toBottomOf="@id/textMode" />
+    </ConstraintSet>
+
+    <ConstraintSet android:id="@+id/textModeDetail">
+        <Constraint
+            android:id="@id/textMode"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            motion:layout_constraintBottom_toBottomOf="parent"
+            motion:layout_constraintTop_toBottomOf="@id/toolBar" />
+        <Constraint
+            android:id="@+id/information"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            motion:layout_constraintBottom_toTopOf="@id/netMode" />
+        <Constraint
+            android:id="@+id/netMode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            motion:layout_constraintBottom_toTopOf="@id/toolBar" />
+        <Constraint
+            android:id="@+id/debugMode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            motion:layout_constraintLeft_toLeftOf="parent"
+            motion:layout_constraintTop_toBottomOf="@id/textMode" />
+    </ConstraintSet>
+
+    <ConstraintSet android:id="@+id/debugModeDetail">
+        <Constraint
+            android:id="@id/debugMode"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            motion:layout_constraintBottom_toBottomOf="parent"
+            motion:layout_constraintTop_toBottomOf="@id/toolBar" />
+        <Constraint
+            android:id="@id/information"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            motion:layout_constraintBottom_toTopOf="@id/netMode" />
+        <Constraint
+            android:id="@id/netMode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            motion:layout_constraintTop_toTopOf="@id/textMode" />
+        <Constraint
+            android:id="@id/textMode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            motion:layout_constraintBottom_toTopOf="@id/toolBar" />
+
+    </ConstraintSet>
+
+</MotionScene>

@@ -1,6 +1,5 @@
 package test
 
-import com.alibaba.fastjson.JSONValidator
 import kotlinx.coroutines.*
 
 suspend fun doSomething():String{
@@ -12,11 +11,11 @@ suspend fun doSomething():String{
 fun main(){
 
     val job = Job()
-    val scope = CoroutineScope(job)
+    CoroutineScope(job)
     runBlocking {
-        val data = async {
+        val data = withContext(Dispatchers.Default) {
             doSomething()
-        }.await()
+        }
         println(data)
     }
 }
