@@ -2,6 +2,7 @@ package com.chanfan.getyourclassschedule
 
 import android.app.AlertDialog
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -16,19 +17,34 @@ import kotlin.math.abs
 class MainActivity2 : AppCompatActivity(), MotionLayout.TransitionListener {
 
     companion object {
-        private val informationButton = ButtonFragment("教程&介绍")
-        private val netModeButton = ButtonFragment("登录获取")
-        private val textModeButton = ButtonFragment("本地获取")
-        private val debugModeButton = ButtonFragment("Debug!")
         private val welcomeFragment = WelcomeFragment()
         private val textModeFragment = TextModeFragment()
         private val netModeFragment = NetModeFragment()
         private val debugFragment = DebugFragment()
+        private val informationButton = ButtonFragment("教程&介绍", "#B4D1E1", R.id.information)
+        private val netModeButton = ButtonFragment("登录获取", "#CCE1F3", R.id.netMode, R.drawable.dog3)
+        private val textModeButton =
+            ButtonFragment("本地获取", "#F7D7C8", R.id.textMode, R.drawable.dog2)
+        private val debugModeButton =
+            ButtonFragment("Debug!", "#FCD9DD", R.id.debugMode, R.drawable.cat2)
         private var originFragment: Fragment? = null
-        private var detailFragment: Fragment? = null
         private var toEnd = true
 
         private val shareIntent = Intent(Intent.ACTION_SEND)
+    }
+
+
+    private val detailID2Button = HashMap<Int, ButtonFragment>().apply {
+        put(R.id.informationDetail, informationButton)
+        put(R.id.netModeDetail, netModeButton)
+        put(R.id.textModeDetail, textModeButton)
+        put(R.id.debugModeDetail, debugModeButton)
+    }
+    private val detailID2Fragment = HashMap<Int, Fragment>().apply {
+        put(R.id.informationDetail, welcomeFragment)
+        put(R.id.netModeDetail, netModeFragment)
+        put(R.id.textModeDetail, textModeFragment)
+        put(R.id.debugModeDetail, debugFragment)
     }
 
     lateinit var shareDialog: AlertDialog
@@ -104,77 +120,91 @@ class MainActivity2 : AppCompatActivity(), MotionLayout.TransitionListener {
             val atEnd = abs(p3 - 1f) < 0.1f
             if (atEnd) {
                 val transaction = supportFragmentManager.beginTransaction()
-                when (p2) {
-                    R.id.informationDetail -> {
-                        toolBar.title = "教程&介绍"
-                        detailFragment = welcomeFragment.also {
-                            transaction.setCustomAnimations(R.animator.show, 0)
-                                .replace(R.id.information, it)
-                                .commitNow()
-                        }
-
-                    }
-                    R.id.netModeDetail -> {
-                        toolBar.title = "登录获取"
-                        detailFragment = netModeFragment.also {
-                            transaction.setCustomAnimations(R.animator.show, 0)
-                                .replace(R.id.netMode, it)
-                                .commitNow()
-                        }
-                    }
-                    R.id.textModeDetail -> {
-                        toolBar.title = "本地获取"
-                        detailFragment = textModeFragment.also {
-                            transaction.setCustomAnimations(R.animator.show, 0)
-                                .replace(R.id.textMode, it)
-                                .commitNow()
-                        }
-                    }
-                    R.id.debugModeDetail -> {
-                        toolBar.title = "Debug!"
-                        detailFragment = debugFragment.also {
-                            transaction.setCustomAnimations(R.animator.show, 0)
-                                .replace(R.id.debugMode, it)
-                                .commitNow()
-                        }
+                toolBar.title = detailID2Button[p2]?.text
+                toolBar.setBackgroundColor(Color.parseColor(detailID2Button[p2]?.color))
+                detailID2Fragment[p2]?.also {
+                    detailID2Button[p2]?.originID?.let { it1 ->
+                        transaction.setCustomAnimations(R.animator.show, 0)
+                            .replace(it1, it)
+                            .commitNow()
                     }
                 }
+//                when (p2) {
+//                    R.id.informationDetail -> {
+//                        toolBar.title = "教程&介绍"
+//                        detailFragment = welcomeFragment.also {
+//
+//                        }
+//
+//                    }
+//                    R.id.netModeDetail -> {
+//                        toolBar.title = "登录获取"
+//                        detailFragment = netModeFragment.also {
+//                            transaction.setCustomAnimations(R.animator.show, 0)
+//                                .replace(R.id.netMode, it)
+//                                .commitNow()
+//                        }
+//                    }
+//                    R.id.textModeDetail -> {
+//                        toolBar.title = "本地获取"
+//                        detailFragment = textModeFragment.also {
+//                            transaction.setCustomAnimations(R.animator.show, 0)
+//                                .replace(R.id.textMode, it)
+//                                .commitNow()
+//                        }
+//                    }
+//                    R.id.debugModeDetail -> {
+//                        toolBar.title = "Debug!"
+//                        detailFragment = debugFragment.also {
+//                            transaction.setCustomAnimations(R.animator.show, 0)
+//                                .replace(R.id.debugMode, it)
+//                                .commitNow()
+//                        }
+//                    }
+//                }
             }
         } else {
             val atEnd = abs(p3 - 1f) < 0.4f
             if (!atEnd) {
                 val transaction = supportFragmentManager.beginTransaction()
-                when (p2) {
-                    R.id.informationDetail -> {
-                        originFragment?.let {
-                            transaction.setCustomAnimations(R.animator.show, 0)
-                                .replace(R.id.information, it)
-                                .commitNow()
-                        }
-
-                    }
-                    R.id.netModeDetail -> {
-                        originFragment?.let {
-                            transaction.setCustomAnimations(R.animator.show, 0)
-                                .replace(R.id.netMode, it)
-                                .commitNow()
-                        }
-                    }
-                    R.id.textModeDetail -> {
-                        originFragment?.let {
-                            transaction.setCustomAnimations(R.animator.show, 0)
-                                .replace(R.id.textMode, it)
-                                .commitNow()
-                        }
-                    }
-                    R.id.debugModeDetail -> {
-                        originFragment?.let {
-                            transaction.setCustomAnimations(R.animator.show, 0)
-                                .replace(R.id.debugMode, it)
-                                .commitNow()
-                        }
+                originFragment?.let {
+                    detailID2Button[p2]?.originID?.let { it1 ->
+                        transaction.setCustomAnimations(R.animator.show, 0)
+                            .replace(it1, it)
+                            .commitNow()
                     }
                 }
+//                when (p2) {
+//                    R.id.informationDetail -> {
+//                        originFragment?.let {
+//                            transaction.setCustomAnimations(R.animator.show, 0)
+//                                .replace(R.id.information, it)
+//                                .commitNow()
+//                        }
+//
+//                    }
+//                    R.id.netModeDetail -> {
+//                        originFragment?.let {
+//                            transaction.setCustomAnimations(R.animator.show, 0)
+//                                .replace(R.id.netMode, it)
+//                                .commitNow()
+//                        }
+//                    }
+//                    R.id.textModeDetail -> {
+//                        originFragment?.let {
+//                            transaction.setCustomAnimations(R.animator.show, 0)
+//                                .replace(R.id.textMode, it)
+//                                .commitNow()
+//                        }
+//                    }
+//                    R.id.debugModeDetail -> {
+//                        originFragment?.let {
+//                            transaction.setCustomAnimations(R.animator.show, 0)
+//                                .replace(R.id.debugMode, it)
+//                                .commitNow()
+//                        }
+//                    }
+//                }
                 toolBar.title = "SCNU课表获取"
             }
         }
@@ -187,20 +217,21 @@ class MainActivity2 : AppCompatActivity(), MotionLayout.TransitionListener {
         } else {
             toEnd = false
             // 详情状态，待转换fragment为初始
-            when (p1) {
-                R.id.informationDetail -> {
-                    originFragment = informationButton
-                }
-                R.id.netModeDetail -> {
-                    originFragment = netModeFragment
-                }
-                R.id.textModeDetail -> {
-                    originFragment = textModeButton
-                }
-                R.id.debugModeDetail -> {
-                    originFragment = debugModeButton
-                }
-            }
+            originFragment = detailID2Button[p1]
+//            when (p1) {
+//                R.id.informationDetail -> {
+//                    originFragment = informationButton
+//                }
+//                R.id.netModeDetail -> {
+//                    originFragment = netModeButton
+//                }
+//                R.id.textModeDetail -> {
+//                    originFragment = textModeButton
+//                }
+//                R.id.debugModeDetail -> {
+//                    originFragment = debugModeButton
+//                }
+//            }
         }
     }
 }

@@ -9,7 +9,7 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="72dp"
-        android:layout_marginStart="20dp"
+        android:layout_marginStart="10dp"
         android:layout_marginEnd="200dp"
         android:layout_marginBottom="10dp"
         android:src="@drawable/head" />
@@ -17,7 +17,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
+        android:layout_marginStart="10dp"
         android:text="@string/en_login_info"
         android:textSize="16sp"
         android:textStyle="bold" />
@@ -25,7 +25,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
+        android:layout_marginStart="10dp"
         android:text="@string/cn_login_info"
         android:textSize="24sp"
         android:textStyle="bold" />
@@ -34,9 +34,8 @@
         android:id="@+id/account"
         android:layout_width="match_parent"
         android:layout_height="70dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="24dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
         android:hint="@string/account"
         android:inputType="number"
         android:selectAllOnFocus="true" />
@@ -45,20 +44,17 @@
         android:id="@+id/password"
         android:layout_width="match_parent"
         android:layout_height="70dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="24dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
         android:hint="@string/password"
-        android:imeOptions="actionDone"
-        android:inputType="textPassword"
+        android:inputType="textVisiblePassword"
         android:selectAllOnFocus="true" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="70dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="24dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
         android:orientation="horizontal">
 
         <EditText
@@ -82,30 +78,28 @@
         android:id="@+id/RadioGroup1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginStart="10dp"
         android:orientation="horizontal">
 
         <RadioButton
             android:id="@+id/SHIPAI"
             android:layout_width="wrap_content"
-            android:layout_height="100px"
+            android:layout_height="50dp"
             android:checked="true"
-            android:text="石牌校区" />
+            android:text="@string/shipai" />
 
         <RadioButton
             android:id="@+id/Else"
             android:layout_width="wrap_content"
-            android:layout_height="100px"
-            android:text="大学城/南海校区" />
+            android:layout_height="50dp"
+            android:text="@string/other" />
     </RadioGroup>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="70dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="24dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
         android:orientation="horizontal">
 
         <Button
@@ -113,7 +107,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="start"
-            android:text="登陆"
+            android:text="@string/login"
             app:layout_constraintStart_toStartOf="parent"
             tools:layout_editor_absoluteY="0dp" />
 
@@ -121,7 +115,7 @@
             android:id="@+id/getCodePic"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="获取验证码"
+            android:text="@string/getCode"
             android:textColor="@color/colorPrimary"
             app:layout_constraintEnd_toEndOf="parent"
             tools:layout_editor_absoluteY="0dp" />

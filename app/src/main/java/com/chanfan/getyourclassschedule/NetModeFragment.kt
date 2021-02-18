@@ -133,6 +133,8 @@ class NetModeFragment : Fragment() {
                 loginService.post(
                     loginForm, getString(R.string.loginLink)
                 ).execute()
+                loginService.get(getString(R.string.confirmLoginLink))
+                    .execute()
                 loginService.get(getString(R.string.jwxtLink))
                     .execute()
                 val formData =

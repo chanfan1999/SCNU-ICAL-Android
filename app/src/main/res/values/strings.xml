@@ -14,7 +14,8 @@
         在左侧栏中选择登录获取功能，输入账号，密码和验证码(如果还在使用身份证号后六位的初始密码要先进行修改)，静候佳音即可。\n
         离线获取模式：
         用电脑端登录到你的教务系统的课表界面，按F12后刷新页面，找到下图的文件，复制响应内容到本应用的输入框即可。\n
-        可尝试用qq等方式发送到手机。微信的文件传输助手处理长文本会截断，导致本应用无法正确处理数据。
+        可尝试用qq等方式发送到手机。微信的文件传输助手处理长文本会截断，导致本应用无法正确处理数据。\n
+        如果发现导入错误，可进入Debug模块里，点击“删除所有事件和生成文件”来恢复原状。
 
     </string>
     <string name="title_activity_image">FullscreenActivity</string>
@@ -31,11 +32,14 @@
     <string name="loginLink">
            https://sso.scnu.edu.cn/AccountService/user/login.html
     </string>
-    <string name="jwxtLink">
+    <string name="confirmLoginLink">
         https://sso.scnu.edu.cn/AccountService/openapi/onekeyapp.html?app_id=96
     </string>
+    <string name="jwxtLink">
+        https://sso.scnu.edu.cn/AccountService/openapi/onekeyapp.html?app_id=105
+    </string>
     <string name="studentLink">
-        https://jwxt.scnu.edu.cn/kbcx/xskbcx_cxXsKb.html?gnmkdm=N253508
+        https://jwxt.scnu.edu.cn/kbcx/xskbcx_cxXsKb.html?gnmkdm=N2151
     </string>
     <string name="teacherLink">
         https://jwxt.scnu.edu.cn/kbcx/jskbcx_cxJsKb1.html?gnmkdm=N2150
@@ -44,7 +48,7 @@
         2020
     </string>
     <string name="xqm">
-        3
+        12
     </string>
     <string name="openSource">项目开源地址：</string>
     <string name="openSourceLink">https://github.com/chanfan1999/SCNU_ICAL_Android</string>
@@ -53,4 +57,19 @@
     <string name="cleanAllText">删除所有事件和生成文件</string>
     <string name="open">打开某个东西</string>
     <string name="showAll">展示所有</string>
+    <string name="about">项目开源地址：\n
+        https://github.com/chanfan1999/SCNU_ICAL_Android\n
+        Credit：\n
+        由@lnm011223提供支持和测试帮助\n
+        开发者：\n
+        东十九514第一AD\n
+        项目需要维护人员，有兴趣可以联系QQ：1078324570
+    </string>
+    <string name="shipai">石牌校区</string>
+    <string name="other">大学城/南海校区</string>
+    <string name="login">登陆</string>
+    <string name="getCode">获取验证码</string>
+    <string name="local">本地模式</string>
+    <string name="notice">注意文件名以“xskbcx_cxXsKb”开头</string>
+    <string name="tips">粘贴获取到的信息后，点击下面的按钮开始处理~</string>
 </resources>

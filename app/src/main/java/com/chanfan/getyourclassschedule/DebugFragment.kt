@@ -54,10 +54,12 @@ class DebugFragment : Fragment() {
                     val title = getString(getColumnIndex("title"))
                     val sl = getString(getColumnIndex("dtstart"))
                     val se = getString(getColumnIndex("dtend"))
+                    val du = getString(getColumnIndex("dtend"))
                     Log.i("日历", "事件名称：$title")
                     Log.i("日历", "事件id：$id")
                     Log.i("日历", "开始时间：$sl")
                     Log.i("日历", "结束时间：$se")
+                    Log.i("日历", "持续时间：$du")
                     idList.add(id)
                 }
                 close()

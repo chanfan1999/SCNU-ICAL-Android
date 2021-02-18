@@ -6,13 +6,13 @@
     android:id="@+id/motionLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#F7FCFD"
     motion:layoutDescription="@xml/main_layout_scene">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolBar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/colorPrimary"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         app:title="Hello" />
@@ -30,18 +30,12 @@
     <com.chanfan.getyourclassschedule.MyFrameLayout
         android:id="@+id/textMode"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        motion:layout_constraintBottom_toTopOf="@id/debugMode"
-        motion:layout_constraintLeft_toLeftOf="parent"
-        motion:layout_constraintTop_toBottomOf="@id/netMode" />
+        android:layout_height="wrap_content" />
 
     <com.chanfan.getyourclassschedule.MyFrameLayout
         android:id="@+id/debugMode"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        motion:layout_constraintBottom_toBottomOf="parent"
-        motion:layout_constraintLeft_toLeftOf="parent"
-        motion:layout_constraintTop_toBottomOf="@id/textMode" />
+        android:layout_height="wrap_content" />
 
 
 </androidx.constraintlayout.motion.widget.MotionLayout>

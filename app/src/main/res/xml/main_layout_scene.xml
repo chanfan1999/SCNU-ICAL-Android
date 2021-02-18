@@ -84,30 +84,39 @@
 
 
     <ConstraintSet android:id="@+id/start">
+        <Constraint android:id="@id/toolBar">
+            <CustomAttribute
+                motion:attributeName="BackgroundColor"
+                motion:customColorValue="#7C9AAB" />
+        </Constraint>
         <Constraint
             android:id="@id/information"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
+            motion:layout_constraintVertical_weight="1"
             android:layout_marginTop="5dp"
             motion:layout_constraintBottom_toTopOf="@+id/netMode"
             motion:layout_constraintTop_toBottomOf="@id/toolBar" />
         <Constraint
             android:id="@id/netMode"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
+            motion:layout_constraintVertical_weight="1"
             motion:layout_constraintBottom_toTopOf="@id/textMode"
             motion:layout_constraintTop_toBottomOf="@id/information" />
         <Constraint
             android:id="@id/textMode"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
+            motion:layout_constraintVertical_weight="1"
             android:layout_marginBottom="0dp"
             motion:layout_constraintBottom_toTopOf="@id/debugMode"
             motion:layout_constraintTop_toBottomOf="@id/netMode" />
         <Constraint
             android:id="@id/debugMode"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
+            motion:layout_constraintVertical_weight="1"
             android:layout_marginBottom="0dp"
             motion:layout_constraintBottom_toBottomOf="parent"
             motion:layout_constraintTop_toBottomOf="@id/textMode" />

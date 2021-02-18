@@ -8,14 +8,13 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="本地模式"
+        android:text="@string/local"
         android:textSize="26sp" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="注意文件名以“xskbcx_cxXsKb”开头"
-        android:textColor="@color/colorPrimary"
+        android:text="@string/notice"
         android:textSize="24sp" />
 
 
@@ -23,8 +22,7 @@
         android:id="@+id/textData"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:focusedByDefault="true"
-        android:hint="粘贴获取到的信息后，点击下面的按钮开始处理~"
+        android:hint="@string/tips"
         android:maxLines="5" />
 
     <RadioGroup
@@ -36,19 +34,20 @@
         <RadioButton
             android:id="@+id/SHIPAI"
             android:layout_width="wrap_content"
-            android:layout_height="100px"
+            android:layout_height="50dp"
             android:checked="true"
             android:text="石牌校区" />
 
         <RadioButton
             android:id="@+id/Else"
             android:layout_width="wrap_content"
-            android:layout_height="100px"
+            android:layout_height="50dp"
             android:text="大学城/南海校区" />
     </RadioGroup>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabButton"
+        app:backgroundTint="#F7D7C8"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
