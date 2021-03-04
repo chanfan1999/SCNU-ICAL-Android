@@ -21,11 +21,11 @@
 
 ## Android端：
 
-[upl-image-preview url=https://static.0xffff.one/assets/files/2020-09-06/1599403828-233852-8dc827e315414621baff1d776c66e957.jpeg]
+![1599403828-233852-8dc827e315414621baff1d776c66e957.jpeg](https://static.0xffff.one/assets/files/2020-09-06/1599403828-233852-8dc827e315414621baff1d776c66e957.jpeg)
 
 ## iOS端：
 
-[upl-image-preview url=https://static.0xffff.one/assets/files/2020-09-06/1599404066-694958-421e44d1f820cc1d42d62354138d592.jpeg]
+![1599404066-694958-421e44d1f820cc1d42d62354138d592.jpeg](https://static.0xffff.one/assets/files/2020-09-06/1599404066-694958-421e44d1f820cc1d42d62354138d592.jpeg)
 
 # 开源地址：
 
