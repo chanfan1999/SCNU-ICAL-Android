@@ -13,8 +13,8 @@ android {
         applicationId "com.chanfan.getyourclassschedule"
         minSdkVersion 23
         targetSdkVersion 30
-        versionCode 1
-        versionName "3.2020.1-stable"
+        versionCode 2
+        versionName "9.2021.1-stable"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
