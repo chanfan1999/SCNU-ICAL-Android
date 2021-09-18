@@ -55,7 +55,7 @@ class MainActivity2 : AppCompatActivity(), MotionLayout.TransitionListener {
             super.onBackPressed()
         } else {
             motionLayout.transitionToStart()
-            toolBar.title = "SCNU课表获取"
+            toolBar.title = resources.getString(R.string.versionHint)
         }
     }
 
@@ -64,7 +64,7 @@ class MainActivity2 : AppCompatActivity(), MotionLayout.TransitionListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main2)
         setSupportActionBar(toolBar)
-        toolBar.title = "SCNU课表获取"
+        toolBar.title = resources.getString(R.string.versionHint)
 
         shareDialog = AlertDialog.Builder(this).run {
             setTitle("要导出ics日历文件吗？")

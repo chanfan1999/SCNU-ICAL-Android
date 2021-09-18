@@ -29,6 +29,7 @@
     <string name="verifyCodeLink">
         https://sso.scnu.edu.cn/AccountService/user/rancode.jpg
     </string>
+    <string name="versionHint">SCNU课表获取-2021/秋</string>
     <string name="loginLink">
            https://sso.scnu.edu.cn/AccountService/user/login.html
     </string>
@@ -45,10 +46,10 @@
         https://jwxt.scnu.edu.cn/kbcx/jskbcx_cxJsKb1.html?gnmkdm=N2150
     </string>
     <string name="xnm">
-        2020
+        2021
     </string>
     <string name="xqm">
-        12
+        3
     </string>
     <string name="openSource">项目开源地址：</string>
     <string name="openSourceLink">https://github.com/chanfan1999/SCNU_ICAL_Android</string>
