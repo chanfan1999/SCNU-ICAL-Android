@@ -1,8 +1,8 @@
 
-# Created by https://www.toptal.com/developers/gitignore/api/androidstudio,kotlin
-# Edit at https://www.toptal.com/developers/gitignore?templates=androidstudio,kotlin
+# Created by https://www.toptal.com/developers/gitignore/api/androidstudio,gradle,kotlin,java
+# Edit at https://www.toptal.com/developers/gitignore?templates=androidstudio,gradle,kotlin,java
 
-### Kotlin ###
+### Java ###
 # Compiled class file
 *.class
 
@@ -27,6 +27,44 @@
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 
+### Kotlin ###
+# Compiled class file
+
+# Log file
+
+# BlueJ files
+
+# Mobile Tools for Java (J2ME)
+
+# Package Files #
+
+# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+
+### Gradle ###
+.gradle
+build/
+
+# Ignore Gradle GUI config
+gradle-app.setting
+
+# Avoid ignoring Gradle wrapper jar file (.jar files are usually ignored)
+!gradle-wrapper.jar
+
+# Cache of project
+.gradletasknamecache
+
+# # Work around https://youtrack.jetbrains.com/issue/IDEA-116898
+# gradle/wrapper/gradle-wrapper.properties
+
+### Gradle Patch ###
+**/build/
+
+# Eclipse Gradle plugin generated files
+# Eclipse Core
+.project
+# JDT-specific (Eclipse Java Development Tools)
+.classpath
+
 ### AndroidStudio ###
 # Covers files to be ignored for android development using Android Studio.
 
@@ -46,9 +84,7 @@ gen/
 out/
 
 # Gradle files
-.gradle
 .gradle/
-build/
 
 # Signing files
 .signing/
@@ -130,8 +166,6 @@ ehthumbs.db
 Thumbs.db
 
 # Legacy Eclipse project files
-.classpath
-.project
 .cproject
 .settings/
 
@@ -162,5 +196,4 @@ fabric.properties
 
 !/gradle/wrapper/gradle-wrapper.jar
 
-# End of https://www.toptal.com/developers/gitignore/api/androidstudio,kotlin
-/app/release/output-metadata.json
+# End of https://www.toptal.com/developers/gitignore/api/androidstudio,gradle,kotlin,java
