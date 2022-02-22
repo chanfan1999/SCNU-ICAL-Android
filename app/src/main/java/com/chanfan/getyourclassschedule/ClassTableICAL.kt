@@ -25,7 +25,7 @@ class ClassTableICAL {
 
         private fun calculateDate(beginWeek: Int, weekday: Int): String {
             val baseDate =
-                Calendar.getInstance().apply { set(2021, Calendar.SEPTEMBER, 6) }  //学期第一天
+                Calendar.getInstance().apply { set(2022, Calendar.FEBRUARY, 21) }  //学期第一天
             val baseTime = baseDate.run {
                 add(Calendar.DATE, (beginWeek - 1) * 7)
                 add(Calendar.DATE, weekday - 1)
