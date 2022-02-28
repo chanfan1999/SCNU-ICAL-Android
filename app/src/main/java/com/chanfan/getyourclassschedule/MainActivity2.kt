@@ -129,39 +129,6 @@ class MainActivity2 : AppCompatActivity(), MotionLayout.TransitionListener {
                             .commitNow()
                     }
                 }
-//                when (p2) {
-//                    R.id.informationDetail -> {
-//                        toolBar.title = "教程&介绍"
-//                        detailFragment = welcomeFragment.also {
-//
-//                        }
-//
-//                    }
-//                    R.id.netModeDetail -> {
-//                        toolBar.title = "登录获取"
-//                        detailFragment = netModeFragment.also {
-//                            transaction.setCustomAnimations(R.animator.show, 0)
-//                                .replace(R.id.netMode, it)
-//                                .commitNow()
-//                        }
-//                    }
-//                    R.id.textModeDetail -> {
-//                        toolBar.title = "本地获取"
-//                        detailFragment = textModeFragment.also {
-//                            transaction.setCustomAnimations(R.animator.show, 0)
-//                                .replace(R.id.textMode, it)
-//                                .commitNow()
-//                        }
-//                    }
-//                    R.id.debugModeDetail -> {
-//                        toolBar.title = "Debug!"
-//                        detailFragment = debugFragment.also {
-//                            transaction.setCustomAnimations(R.animator.show, 0)
-//                                .replace(R.id.debugMode, it)
-//                                .commitNow()
-//                        }
-//                    }
-//                }
             }
         } else {
             val atEnd = abs(p3 - 1f) < 0.4f
@@ -174,38 +141,7 @@ class MainActivity2 : AppCompatActivity(), MotionLayout.TransitionListener {
                             .commitNow()
                     }
                 }
-//                when (p2) {
-//                    R.id.informationDetail -> {
-//                        originFragment?.let {
-//                            transaction.setCustomAnimations(R.animator.show, 0)
-//                                .replace(R.id.information, it)
-//                                .commitNow()
-//                        }
-//
-//                    }
-//                    R.id.netModeDetail -> {
-//                        originFragment?.let {
-//                            transaction.setCustomAnimations(R.animator.show, 0)
-//                                .replace(R.id.netMode, it)
-//                                .commitNow()
-//                        }
-//                    }
-//                    R.id.textModeDetail -> {
-//                        originFragment?.let {
-//                            transaction.setCustomAnimations(R.animator.show, 0)
-//                                .replace(R.id.textMode, it)
-//                                .commitNow()
-//                        }
-//                    }
-//                    R.id.debugModeDetail -> {
-//                        originFragment?.let {
-//                            transaction.setCustomAnimations(R.animator.show, 0)
-//                                .replace(R.id.debugMode, it)
-//                                .commitNow()
-//                        }
-//                    }
-//                }
-                toolBar.title = "SCNU课表获取"
+                toolBar.title = resources.getString(R.string.versionHint)
             }
         }
     }

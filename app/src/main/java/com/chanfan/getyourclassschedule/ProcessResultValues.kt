@@ -6,4 +6,5 @@ object ProcessResultValues {
     const val EXISTED = 2
     const val RANDCODEERROR = 3
     const val PROCESSING = 4
+    const val LOGIN_SUCCESS = 5
 }
