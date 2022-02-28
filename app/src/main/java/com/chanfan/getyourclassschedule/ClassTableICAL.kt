@@ -92,8 +92,9 @@ class ClassTableICAL {
                             if (period.endsWith("(单)") || period.endsWith("(双)")) {
                                 weekNumber = (endWeek - beginWeek) / 2 + 1
                                 gap = true
+                            } else {
+                                weekNumber = endWeek - beginWeek + 1
                             }
-                            weekNumber = endWeek - beginWeek + 1
                             //将“1-3”节课提取出来用于计算时间
                             val lastArray = lastTime.split("-".toRegex())
                             val begin = lastArray[0].toInt()
