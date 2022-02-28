@@ -65,7 +65,7 @@ class ClassTableICAL {
             var endWeek: Int
             var weekNumber: Int
             jsonObject.apply {
-                val period = get("zcd") as String //持续周，如“1-17周”
+                val period = get("zcd") as String //持续周，如“1-17周”, 边界case，会出现1-19周（单）的情况，做特殊处理
                 val weekday = get("xqj") as String //星期几，如“2”表示星期二
                 val className = get("kcmc") as String//课程名，如“软件工程”
                 val lastTime = get("jcs") as String //课程持续时间，如“1-3”节
@@ -88,6 +88,11 @@ class ClassTableICAL {
                         val temp = m.group(0)
                         if (temp != null && temp.isNotEmpty()) {
                             endWeek = temp.toInt()
+                            var gap = false
+                            if (period.endsWith("(单)") || period.endsWith("(双)")) {
+                                weekNumber = (endWeek - beginWeek) / 2 + 1
+                                gap = true
+                            }
                             weekNumber = endWeek - beginWeek + 1
                             //将“1-3”节课提取出来用于计算时间
                             val lastArray = lastTime.split("-".toRegex())
@@ -117,7 +122,8 @@ class ClassTableICAL {
                                 description = teacherName,
                                 DTStart = startTime,
                                 duration = duration,
-                                count = weekNumber.toString()
+                                count = weekNumber.toString(),
+                                weekGap = gap
                             )
                             calender.addEvent(event)
                             isBegin = true
@@ -158,10 +164,12 @@ class ClassTableICAL {
                     put(CalendarContract.Events.CALENDAR_ID, calID)
                     put(CalendarContract.Events.DTSTART, startMillis)
                     put(CalendarContract.Events.DURATION, it.duration)
-//                    put(CalendarContract.Events.DTEND, endMillis)
                     put(CalendarContract.Events.TITLE, it.summary)
                     put(CalendarContract.Events.EVENT_LOCATION, it.location)
-                    put(CalendarContract.Events.RRULE, "FREQ=${it.RRule};COUNT=${it.count}")
+                    put(
+                        CalendarContract.Events.RRULE,
+                        "FREQ=${it.RRule};COUNT=${it.count};${if (it.weekGap) "INTERVAL=2;" else ""}"
+                    )
                     put(CalendarContract.Events.DESCRIPTION, it.description)
                     put(CalendarContract.Events.EVENT_TIMEZONE, "Asia/Shanghai")
                 }
@@ -195,11 +203,11 @@ class ClassTableICAL {
                     write("DESCRIPTION:${e.description}\n")
                     write("DTSTART:${e.DTStart}\n")
                     write("DURATION:${e.duration}\n")
-                    write("RRULE:FREQ=${e.RRule};")
+                    write("RRULE:FREQ=${e.RRule};${if (e.weekGap) "INTERVAL=2;" else ""}")
                     write("COUNT=${e.count}\n")
                     write(
                         "BEGIN:VALARM\nACTION:DISPLAY\nTRIGGER;RELATED=START:-PT20M \nDESCRIPTION:${
-                        e.alertDescription
+                            e.alertDescription
                         }\nEND:VALARM\nEND:VEVENT\n"
                     )
                 }

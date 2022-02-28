@@ -21,7 +21,8 @@ class SugarICAL {
         var duration: String = "PT120M",
         var RRule: String = WEEKLY,
         var count: String = "0",
-        var alertDescription: String = "是时候出发去${location}上${summary}啦"
+        var alertDescription: String = "是时候出发去${location}上${summary}啦",
+        var weekGap: Boolean = false
     )
 
     class Calender {
@@ -52,7 +53,7 @@ class SugarICAL {
                     write("DESCRIPTION:${e.description}\n")
                     write("DTSTART:${e.DTStart}\n")
                     write("DURATION:${e.duration}\n")
-                    write("RRULE:FREQ=${e.RRule};")
+                    write("RRULE:FREQ=${e.RRule};${if (e.weekGap) "INTERVAL=2;" else ""}")
                     write("COUNT=${e.count}\n")
                     write(
                         "BEGIN:VALARM\nACTION:DISPLAY\nTRIGGER;RELATED=START:-PT20M \nDESCRIPTION:${

@@ -26,9 +26,6 @@
         <activity
             android:name=".ImageActivity"
             android:launchMode="singleTask" />
-        <activity android:name=".MainActivity">
-
-        </activity>
 
         <provider
             android:name="androidx.core.content.FileProvider"
